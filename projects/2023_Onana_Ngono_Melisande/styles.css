@@ -1,0 +1,265 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.Hamburger_icone {
+    display: none;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.navigation{
+    display: flex;
+    align-items: center;
+}
+
+.navigation a {
+    color: black;
+    border: none;
+    background-color: white;
+    margin-top: 14px;
+    margin-right: 20px;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.navigation a:hover {
+    text-decoration: underline;
+}
+
+.bouton {
+    background-color: #414141;
+    color: white;
+    border: none;
+    width: 124px;
+    height: 44px;
+    border-radius: 9px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 14px;
+    margin-left: 20px; /* Garder le bouton à sa place */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bloc1 {
+    background-image: url(images/mountain.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 655px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.image_bloc1{
+    position: relative;
+}
+
+.bloc1 .bachelier {
+    position: absolute;
+    bottom: 67px;
+    left: 100px;
+    width: 55px;
+}
+
+.bloc1 h1 {
+    margin-top: 229px;
+    margin-bottom: 10px; /* Ajouter une marge en bas */
+    font-size: 49px;
+    color: white;
+}
+
+.bloc1 p {
+    color: white;
+    margin-top: -10px;
+}
+
+.bloc2 {
+    background-color: #3a9f3f;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.contenus-bloc2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centrer horizontalement */
+    position : relative;
+}
+
+.images-bloc2 {
+    margin-left: 45px;
+    margin-top: 85px;
+}
+
+.image-bloc2 {
+    width: 100%;
+    height: 265px;
+}
+
+.certification {
+    position: absolute;
+    top: 52px;
+    left: 467px;
+    width: 85px;
+    transform: rotate(23deg);
+}
+
+.bloc2 p {
+    font-weight: 600;
+    font-size: 25px;
+}
+
+.bloc2 .bloc {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.texte3-bloc2 {
+    margin-left: 262px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.texte4-bloc2 {
+    margin-left: 307px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.barre-horizontale {
+    background-color: black;
+    height: 1px;
+    width: 97%;
+    margin-top: 21px;
+}
+
+footer {
+    background-color: #4c4a60;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+
+    .navigation a, .certification {
+display: none;
+}
+
+.Hamburger_icone {
+display: block;
+width: 56px;
+}
+
+header .logo{
+margin-right: 360px;
+}
+
+.bouton {
+margin-left: 10px;
+border-radius: 0;
+}
+
+.bloc1{
+padding-left: 45px;
+align-items: baseline;
+}
+
+.bloc1 .bachelier {
+ left:200px;
+}
+
+.bloc2 {
+background-color: #9f423b;
+flex-direction: column;
+align-items: center;
+}
+
+.contenus-bloc2 {
+flex-direction: column-reverse; /* Inverser l'ordre des éléments enfants en colonnes */
+align-items: center;
+}
+
+.images-bloc2 {
+margin-right: 0;
+margin-top: 0;
+flex: 1 1 auto;
+max-width: 100%;
+}
+
+.bloc2 p {
+font-size: 24px;
+}
+
+.image-bloc2 {
+border-radius: 19% 19% 0 0;
+margin-top: 20px;
+width: 85%;
+height: 311px;
+}
+
+.texte3-bloc2 {
+margin-left: 271px;
+}
+
+.texte4-bloc2 {
+margin-left: 318px;
+}
+
+.barre-horizontale {
+width: 85%;
+}
+
+footer {
+text-align: right;
+}
+}
+@media only screen and (max-width: 425px) {
+    header .logo{
+        margin-right: 0;
+    }
+
+    .bloc1{
+        align-items: center;
+    }
+
+    .bachelier{
+        display: none;
+    }
+
+    .bloc2 p{
+        font-size: 19px;
+    }
+
+    .image-bloc2{
+        width: 93%;
+        height: 230px;
+    }
+
+    .barre-horizontale{
+        width: 93%;
+    }
+
+    .texte3-bloc2 {
+        margin-left: 157px;
+    }
+
+    .texte4-bloc2{
+        margin-left: 203px;
+    }
+}
