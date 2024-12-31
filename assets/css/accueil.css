@@ -247,6 +247,33 @@ section {
   background-color: #c53e4a;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #FD4E5D;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.pagination a.active {
+  background-color: #FD4E5D;
+  color: #fff;
+  border-color: #FD4E5D;
+}
+
+.pagination a:hover {
+  background-color: #de4451;
+  color: #fff;
+  border-color: #de4451;
+}
+
 #skills{
   background-color: #f7f7f7;
   color: #333;

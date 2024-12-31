@@ -2,6 +2,9 @@
 session_start(); // Démarrer la session
 include 'includes/db_connect.php';
 
+// Configurer la locale en français
+setlocale(LC_TIME, 'fr_FR.UTF-8');
+
 // Récupérer les apprentissages depuis la base de données
 $stmt = $pdo->query('SELECT * FROM apprentissages');
 $apprentissages = $stmt->fetchAll();
@@ -60,6 +63,28 @@ function formatDateFr($date) {
     $year = $dateTime->format('Y');
     return "$month $year";
 }
+
+// Trier les projets par ordre décroissant de date de début
+usort($projets, function($a, $b) {
+    return strtotime($b['date_debut']) - strtotime($a['date_debut']);
+});
+
+// Définir le nombre de projets par page
+$projetsParPage = 3;
+
+// Calculer le nombre total de pages
+$totalProjets = count($projets);
+$totalPages = ceil($totalProjets / $projetsParPage);
+
+// Déterminer la page actuelle
+$pageActuelle = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$pageActuelle = max(1, min($totalPages, $pageActuelle));
+
+// Calculer l'offset pour la requête SQL
+$offset = ($pageActuelle - 1) * $projetsParPage;
+
+// Récupérer les projets pour la page actuelle
+$projetsPage = array_slice($projets, $offset, $projetsParPage);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -114,7 +139,7 @@ function formatDateFr($date) {
     <section id="projects">
         <h1>Mes Réalisations</h1>
         <div class="projects-grid">
-            <?php foreach ($projets as $projet): ?>
+            <?php foreach ($projetsPage as $projet): ?>
                 <div class="project-card">
                     <img src="<?= htmlspecialchars($projet['image']); ?>" alt="<?= htmlspecialchars($projet['titre']); ?>">
                     <div class="project-content">
@@ -137,6 +162,19 @@ function formatDateFr($date) {
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <?php if ($pageActuelle > 1): ?>
+                <a href="?page=<?= $pageActuelle - 1 ?>#projects">&laquo; Précédent</a>
+            <?php endif; ?>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?= $i ?>#projects" class="<?= $i == $pageActuelle ? 'active' : '' ?>"><?= $i ?></a>
+            <?php endfor; ?>
+            <?php if ($pageActuelle < $totalPages): ?>
+                <a href="?page=<?= $pageActuelle + 1 ?>#projects">Suivant &raquo;</a>
+            <?php endif; ?>
+        </div>
     </section>
 
     <!-- Section Apprentissages -->
@@ -149,7 +187,7 @@ function formatDateFr($date) {
                     <i class="<?= htmlspecialchars($apprentissage['logo']) ?>"></i>
                     <h3><?= htmlspecialchars($apprentissage['titre']) ?></h3>
                     <p><?= htmlspecialchars($apprentissage['description']) ?></p>
-                    <p class="date">Depuis <?= date('F Y', strtotime($apprentissage['date_debut'])) ?></p>
+                    <p class="date">Depuis <?= ucfirst(formatDateFr($apprentissage['date_debut'])) ?></p>
                     <?php if ($apprentissage['certification']): ?>
                         <a href="<?= htmlspecialchars($apprentissage['certification']) ?>" class="btn" target="_blank">Certification en cours</a>
                     <?php endif; ?>
