@@ -1,0 +1,150 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe6f2;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+    margin: 0;
+    color: #FD4E5D;
+}
+
+nav {
+    margin: 20px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #FD4E5D;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    text-align: center;
+}
+
+main h2 {
+    color: #FD4E5D;
+}
+
+main p {
+    color: #666;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #FD4E5D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+}
+
+.actions a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #FD4E5D;
+}
+
+.actions a:hover {
+    text-decoration: underline;
+}
+
+.actions a.delete {
+    color: #FF0000;
+}
+
+.actions a.delete:hover {
+    text-decoration: underline;
+}
+
+/* Styles pour la pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #FD4E5D;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.pagination a.active {
+    background-color: #FD4E5D;
+    color: #fff;
+    border-color: #FD4E5D;
+}
+
+.pagination a:hover {
+    background-color: #e04a50;
+    color: #fff;
+    border-color: #e04a50;
+}
+
+/* Styles pour les boutons Supprimer et Modifier */
+.actions a.modify {
+    color: #FD4E5D;
+}
+
+.actions a.modify:hover {
+    text-decoration: underline;
+}
+
+.actions a.delete {
+    color: #FD4E5D;
+}
+
+.actions a.delete:hover {
+    text-decoration: underline;
+}

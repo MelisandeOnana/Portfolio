@@ -1,0 +1,537 @@
+/* Définition des couleurs */
+:root {
+    --primary-color: #360C0C; /* Couleur principale */
+    --text-color: #333; /* Couleur de texte principale */
+    --link-color: #360C0C; /* Couleur des liens */
+    --link-hover-color: #360C0C; /* Couleur des liens au survol */
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #360C0C;
+    color: #fff;
+    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.centre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-grow: 1;
+    margin-left: 155px;
+}
+
+.header-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.header-line {
+    width: 100%;
+    max-width: 200px;
+    height: 1px;
+    background-color: #fff;
+    margin: 5px 0;
+}
+
+.header-subtitle {
+    font-size: 1em;
+}
+
+/* Menu hamburger */
+.hamburger-menu {
+    cursor: pointer;
+    width: 30px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bar1, .bar2, .bar3 {
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.bar1 { width: 45px; }
+.bar2 { width: 35px; }
+.bar3 { width: 25px; }
+
+/* Container de connexion */
+.login-container {
+    margin-right: 20px;
+}
+.login-container {
+    margin-right: 20px;
+}
+
+/* Bouton du dropdown */
+.login-btn {
+    width: 35px;
+}
+
+/* Styles pour le bouton de bienvenue */
+.welcome-btn {
+    background-color: #fff;
+    color: #360C0C;
+    border: 2px solid #360C0C;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.welcome-btn:hover {
+    background-color: #360C0C;
+    color: #fff;
+}
+
+/* Conteneur de dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: center; /* Ajouté pour centrer le contenu */
+}
+
+/* Contenu du dropdown (caché par défaut) */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    text-align: center;
+    border-radius: 4px;
+    margin-top: 10px; /* Un peu d'espace entre le bouton et le menu */
+    opacity: 0; /* Début avec une opacité de 0 pour l'animation */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition pour l'animation */
+    transform: translateY(-10px); /* Début avec une légère translation vers le haut */
+}
+
+/* Afficher le contenu du dropdown */
+.dropdown.show .dropdown-menu {
+    display: block;
+    opacity: 1; /* Opacité 1 pour afficher le contenu */
+    transform: translateY(0); /* Réinitialiser la translation */
+}
+
+/* Liens du dropdown */
+.dropdown-menu a {
+    color: #360C0C;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Styles des liens au survol */
+.dropdown-menu a:hover {
+    background-color: #360C0C;
+    color: #fff;
+}
+
+/* Styles des boutons */
+.admin-btn, .logout-btn {
+    background-color: #fff;
+    color: #360C0C;
+    border: 2px solid #360C0C;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin: 5px 0; /* Espace entre les boutons */
+}
+
+/* Styles des boutons au survol */
+.admin-btn:hover, .logout-btn:hover {
+    background-color: #360C0C;
+    color: #fff;
+}
+
+/* Styles CSS pour la side nav */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #360C0C;
+    overflow-x: hidden;
+    transition: width 0.5s, opacity 0.5s;
+    padding-top: 60px;
+    text-align: left; 
+    z-index: 1000; /* Assurez-vous que la side nav a un z-index élevé */
+}
+
+.sidenav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidenav ul li {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+    margin: 5px 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.sidenav ul li a {
+    color: #fff;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+.sidenav ul li img {
+    height: 32px;
+    margin-right: 10px; /* Ajoutez un espace entre l'icône et le texte */
+}
+
+.sidenav ul li:hover {
+    background-color: #444;
+    color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.sidenav span {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.sidenav .closebtn:hover {
+    color: #f0f0f0;
+    transform: rotate(90deg);
+}
+
+/* Liens d'administration */
+.admin-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.admin-link {
+    background-color: #360C0C; /* Couleur principale */
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px; /* Coins plus arrondis */
+    font-size: 1.1em;
+    font-weight: bold; /* Texte en gras */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajouter une ombre légère */
+}
+
+.admin-link:hover {
+    background-color: #540f0f; /* Couleur au survol */
+    transform: translateY(-3px); /* Légère translation vers le haut au survol */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
+    color: #fff;
+}
+
+/* Texte du lien centré verticalement */
+.admin-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 960px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    color: var(--primary-color); /* Couleur principale pour les titres */
+    text-align: center;
+}
+
+a {
+    color: var(--link-color); /* Couleur des liens */
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover-color); /* Couleur des liens au survol */
+    text-decoration: underline;
+}
+
+/* Formulaire d'ajout d'actualité */
+.form-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.form-container h2 {
+    margin-bottom: 10px;
+    color: var(--primary-color); /* Couleur principale */
+}
+
+.form-container label {
+    font-weight: bold;
+}
+
+.form-container input[type="text"],
+.form-container input[type="date"],
+.form-container select,
+.form-container textarea,
+.form-container input[type="file"],
+.form-container input[type="submit"] {
+    width: calc(100% - 22px); /* Ajustement de la largeur pour tenir compte du padding et des marges */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* S'assure que le padding est inclus dans la largeur totale */
+}
+
+.form-container input[type="submit"] {
+    background-color: #360C0C;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container input[type="submit"]:hover {
+    background-color: #360c0cd5;
+}
+
+/* Cartes pour les actualités */
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    color: var(--primary-color); /* Couleur principale */
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.card a {
+    color: var(--link-color); /* Couleur des liens */
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--link-color); /* Couleur des liens */
+    border: 1px solid var(--link-color); /* Couleur des liens */
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.pagination a:hover {
+    background-color: var(--link-hover-color); /* Couleur des liens au survol */
+    color: #fff;
+    border-color: var(--link-hover-color); /* Couleur des liens au survol */
+}
+
+.pagination .disabled {
+    color: #999;
+    pointer-events: none;
+}
+
+/* Pied de page */
+footer {
+    background-color: var(--primary-color); /* Couleur principale */
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a{
+    color: #fff;
+}
+
+/* Media queries pour la réactivité */
+@media screen and (max-width: 1024px) {
+    .centre {
+        margin-left: 10px;
+    }
+
+    .header-title {
+        font-size: 1.2em;
+    }
+
+    .header-subtitle {
+        font-size: 0.8em;
+    }
+
+    .sidenav {
+        padding-top: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .centre {
+        display: none;
+    }
+
+    .header-line {
+        display: none;
+    }
+
+    .login-container {
+        display: none;
+    }
+
+    .sidenav {
+        width: 250px;
+    }
+
+    .sidenav .closebtn {
+        top: 0;
+        right: 10px;
+        font-size: 2em;
+    }
+
+    .container {
+        margin: 20px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .sidenav {
+        width: 200px;
+    }
+
+    .pagination {
+        text-align: center;
+    }
+
+    .pagination a {
+        margin-right: 0;
+        margin-bottom: 5px;
+        display: block;
+    }
+}
+
+/* Animations */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+/* Classes pour animations */
+.slide-in-left {
+    animation: slideInLeft 0.5s forwards;
+}
+
+.slide-out-left {
+    animation: slideOutLeft 0.5s forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s forwards;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.5s forwards;
+}

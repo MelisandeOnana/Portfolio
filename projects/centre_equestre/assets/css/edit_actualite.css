@@ -1,0 +1,318 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f3f4f6;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: linear-gradient(90deg, rgba(54,12,12,1) 0%, rgba(128,21,21,1) 100%);
+    color: white;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+.header-contenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.gauche-header {
+    display: flex;
+    align-items: center;
+}
+
+.gauche-header .hamburger {
+    margin-right: 10px;
+}
+
+.centre-header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.centre-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    margin: 0;
+    animation: slideInFromTop 1s ease-in-out; /* Animation */
+}
+
+.centre-header p {
+    font-size: 16px;
+    margin: 5px 0 0 0;
+    animation: slideInFromBottom 1s ease-in-out; /* Animation */
+}
+
+/* Keyframes pour les animations du centre du header */
+@keyframes slideInFromTop {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes slideInFromBottom {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.hamburger {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.barre1, .barre2, .barre3 {
+    height: 3px;
+    background-color: #fff;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.hamburger {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.barre1, .barre2, .barre3 {
+    height: 3px;
+    background-color: #fff;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.barre1 {
+    width: 45px;
+}
+
+.barre2 {
+    width: 35px;
+}
+
+.barre3 {
+    width: 25px;
+}
+
+.hamburger:hover .barre1, .hamburger:hover .barre2, .hamburger:hover .barre3 {
+    background-color: #f1f1f1;
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+hr {
+    margin: 5px 0;
+}
+
+.connexion-btn {
+    background-color: #fff;
+    color: #360C0C;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.connexion-btn:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* Style pour le conteneur du message de bienvenue et du bouton de déconnexion */
+.admin_conteneur {
+    position: relative;
+    margin-bottom: 20px; /* Espacement entre le message de bienvenue et le bouton de déconnexion */
+    cursor: pointer; /* Changement du curseur pour indiquer que l'élément est cliquable */
+}
+
+/* Style pour le bouton de déconnexion */
+.boutons {
+    position: absolute;
+    left: 139px;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 230px;
+}
+
+.boutons  button {
+    background-color: #fff;
+    color: #360C0C;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    display: block; /* Les boutons s'affichent en bloc */
+    width: 100%; /* Les boutons occupent toute la largeur du conteneur */
+    margin-bottom: 5px; /* Espacement entre les boutons */
+    text-align: left; /* Alignement du texte à gauche */
+}
+
+.boutons button:hover {
+    background-color: #f1f1f1;
+}
+
+/* Conteneur pour le sous-menu */
+.sous_menu {
+    background-color: #fff;
+    color: #360C0C;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect pour les sous-menus */
+.sous_menu:hover {
+    background-color: #f1f1f1;
+}
+
+/* Side Navigation Menu */
+.barre_lateral {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color: #360C0C;
+    overflow-x: hidden;
+    transition: width 0.5s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 60px;
+}
+
+.barre_lateral  h1 {
+    color: white;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 24px;
+}
+
+.barre_lateral  a {
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+    width: 100%;
+    text-align: left;
+    padding-left: 90px;
+}
+
+.barre_lateral a:hover {
+    color: #f1f1f1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.barre_lateral .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 36px;
+    color: white;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #f1f1f1;
+}
+
+.close-button {
+    margin-top: auto;
+    background-color: #fff;
+    color: #360C0C;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.close-button:hover {
+    background-color: #f1f1f1;
+}
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 39px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #360C0C;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2b0909;
+        }
+
+        /* Footer Styles */
+footer {
+    text-align: left;
+    padding: 20px;
+    background-color: #360C0C;
+    color: white;
+}
+
+footer p {
+    margin: 0;
+}

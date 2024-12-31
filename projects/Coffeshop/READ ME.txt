@@ -1,0 +1,25 @@
+# Projet de Gestion de Produits
+
+Ce projet est une application web de gestion de produits. Il permet d'ajouter, de modifier, de supprimer et de rechercher des produits dans une base de données.
+
+https://github.com/jjmwork/my-coffee-shop-MelisandeOnana/tree/main
+
+## Utilisation
+
+1. **Page d'accueil** :
+   - Accédez à `index.php` pour voir la liste des produits.
+   - Cliquer sur un nom de produit pour afficher sa fiche produit
+   - Utilisez le formulaire de recherche pour trouver des produits par nom.
+
+2. **Ajouter un Produit** :
+   - Accédez à `ajouter_produit.php` pour ajouter un nouveau produit.
+
+3. **Modifier un Produit** :
+   - Accédez à `modifier_produit.php?id=<ID>` pour modifier un produit existant.
+
+4. **Supprimer un Produit** :
+   - Accédez à `supprimer_produit.php?id=<ID>` pour supprimer un produit existant.
+
+5. **Détails d'un Produit** :
+   - Accédez à `produit.php?id=<ID>` pour voir les détails d'un produit spécifique.
+

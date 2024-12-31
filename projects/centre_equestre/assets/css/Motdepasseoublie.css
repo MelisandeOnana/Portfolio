@@ -1,0 +1,256 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #360C0C;
+    color: #fff;
+    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.centre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.header-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.header-line {
+    width: 100%;
+    max-width: 200px;
+    height: 1px;
+    background-color: #fff;
+    margin: 5px 0;
+}
+
+.header-subtitle {
+    font-size: 1em;
+}
+
+.hamburger-menu {
+    cursor: pointer;
+    width: 30px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bar1{
+    width: 45px;
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.bar2 {
+    width: 35px;
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.bar3 {
+    width: 25px;
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+.login-container {
+    display: none;
+}
+
+/* Styles CSS pour la side nav */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #360C0C;
+    overflow-x: hidden;
+    transition: width 0.5s, opacity 0.5s;
+    padding-top: 60px;
+    text-align: left; 
+    z-index: 1000; /* Assurez-vous que la side nav a un z-index élevé */
+}
+
+.sidenav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidenav ul li {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+    margin: 5px 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.sidenav ul li a {
+    color: #fff;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+.sidenav ul li img {
+    height: 32px;
+    margin-right: 10px; /* Ajoutez un espace entre l'icône et le texte */
+}
+
+.sidenav ul li:hover {
+    background-color: #444;
+    color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.sidenav span {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.sidenav .closebtn:hover {
+    color: #f0f0f0;
+    transform: rotate(90deg);
+}
+
+/* Motdepasseoublie.css */
+form {
+    max-width: 600px;
+    width: 100%; /* Utilisation de la largeur maximale définie, mais adaptable */
+    margin: auto; /* Utilisation de marges automatiques pour centrer horizontalement */
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10%;
+}
+
+form h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Espacement sous le titre */
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #360C0C;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #4d1515;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #360C0C;
+    color: white;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-container p {
+    margin: 5px 0;
+}
+
+.footer-container a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-container a:hover {
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+    
+    .centre {
+        text-align: center;
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
+    .header-title {
+        font-size: 1.2em;
+    }
+
+    .header-subtitle {
+        font-size: 0.8em;
+    }
+
+    .login-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav { padding-top: 15px; }
+    .sidenav ul { font-size: 18px; }
+}
