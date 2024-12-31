@@ -1,0 +1,143 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe6f2; /* Couleur de fond rose pâle */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+    margin: 0;
+    color: #FD4E5D; /* Couleur de texte rose */
+}
+
+nav {
+    margin: 20px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #FD4E5D; /* Couleur des liens */
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #cc0033; /* Couleur des liens au survol */
+}
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    table-layout: fixed; /* Fixes the width of columns */
+}
+
+table, th, td {
+    border: 1px solid #FD4E5D; /* Bordure rose */
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    word-wrap: break-word; /* Ensures long text breaks onto new lines */
+}
+
+th {
+    background-color: #ffccd5; /* Fond des en-têtes de table rose clair */
+}
+
+tr:nth-child(even) {
+    background-color: #ffe6f2; /* Fond des lignes paires rose pâle */
+}
+
+tr:hover {
+    background-color: #ffccd5; /* Fond des lignes au survol rose clair */
+}
+
+td.message-column {
+    max-height: 100px; /* Limits the message cell height */
+    overflow-y: auto;  /* Adds scroll if the content exceeds height */
+}
+
+a {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    text-decoration: none;
+}
+
+form {
+    display: inline;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #FD4E5D; /* Boutons rose */
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+a button:hover {
+    background-color: #cc0033; /* Boutons au survol rose plus foncé */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    color: #FD4E5D; /* Pink color for pagination links */
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid #FD4E5D; /* Border color matching link color */
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #FD4E5D; /* Pink background on hover */
+    color: white; /* White text on hover */
+}
+
+.pagination a.active {
+    background-color: #FD4E5D; /* Pink background for the active page */
+    color: white;
+    border: 1px solid #FD4E5D; /* Maintain border color for active */
+    cursor: default; /* Prevent pointer on the active link */
+}
+
+.pagination a.disabled {
+    color: #ccc; /* Grey out the previous/next links when disabled */
+    pointer-events: none; /* Disable clicking on disabled links */
+    border-color: #ccc;
+}
