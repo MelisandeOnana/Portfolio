@@ -2,10 +2,10 @@
 session_start(); // Démarrer la session
 include 'includes/db_connect.php';
 
-// Configurer la locale en français
+// Configuration de la locale en français
 setlocale(LC_TIME, 'fr_FR.UTF-8');
 
-// Récupérer les apprentissages depuis la base de données
+// Récupére les apprentissages depuis la base de données
 $stmt = $pdo->query('SELECT * FROM apprentissages');
 $apprentissages = $stmt->fetchAll();
 
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Liste des domaines autorisés
     $allowed_domains = ['orange.fr', 'gmail.com', 'wanadoo.fr'];
 
-    // Vérifier si le domaine de l'email fait partie de la liste autorisée
+    // Vérifie si le domaine de l'email fait partie de la liste autorisée
     if (!in_array($email_domain, $allowed_domains)) {
         $_SESSION['contact_error'] = "Veuillez entrer une adresse email valide avec un domaine autorisé (orange.fr, gmail.com, wanadoo.fr).";
         header("Location: index.php#contact");
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 
-// Récupérer les projets depuis la base de données
+// Récupére les projets depuis la base de données
 $stmt = $pdo->query('SELECT * FROM projets WHERE visible = 1');
 $projets = $stmt->fetchAll();
 
@@ -64,26 +64,26 @@ function formatDateFr($date) {
     return "$month $year";
 }
 
-// Trier les projets par ordre décroissant de date de début
+// Trie les projets par ordre décroissant de date de début
 usort($projets, function($a, $b) {
     return strtotime($b['date_debut']) - strtotime($a['date_debut']);
 });
 
-// Définir le nombre de projets par page
+// Défini le nombre de projets par page
 $projetsParPage = 3;
 
-// Calculer le nombre total de pages
+// Calcule le nombre total de pages
 $totalProjets = count($projets);
 $totalPages = ceil($totalProjets / $projetsParPage);
 
-// Déterminer la page actuelle
+// Détermine la page actuelle
 $pageActuelle = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $pageActuelle = max(1, min($totalPages, $pageActuelle));
 
-// Calculer l'offset pour la requête SQL
+// Calcule l'offset pour la requête SQL
 $offset = ($pageActuelle - 1) * $projetsParPage;
 
-// Récupérer les projets pour la page actuelle
+// Récupére les projets pour la page actuelle
 $projetsPage = array_slice($projets, $offset, $projetsParPage);
 ?>
 <!DOCTYPE html>

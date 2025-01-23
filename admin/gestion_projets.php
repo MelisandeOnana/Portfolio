@@ -25,10 +25,10 @@ if ($searchTerm) {
 $stmt->execute();
 $totalProjects = $stmt->fetchColumn();
 
-// Calculer le nombre total de pages
+// Calcule le nombre total de pages
 $totalPages = ceil($totalProjects / $projectsPerPage);
 
-// Déterminer la page actuelle
+// Détermine la page actuelle
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($currentPage < 1) {
     $currentPage = 1;
@@ -36,10 +36,10 @@ if ($currentPage < 1) {
     $currentPage = $totalPages;
 }
 
-// Calculer l'offset pour la requête SQL
+// Calcule l'offset pour la requête SQL
 $offset = max(0, ($currentPage - 1) * $projectsPerPage);
 
-// Récupérer les projets pour la page actuelle
+// Récupére les projets pour la page actuelle
 $sql = 'SELECT * FROM projets';
 if ($searchTerm) {
     $sql .= ' AND (titre LIKE :search OR description LIKE :search)';
