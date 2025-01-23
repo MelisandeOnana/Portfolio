@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="month" id="date_fin" name="date_fin">
 
             <label for="lien">Lien du Projet:</label>
-            <input type="text" id="lien" name="lien" value="project/">
+            <input type="text" id="lien" name="lien" value="projects/">
 
             <label for="image">Image du Projet:</label>
             <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)">
