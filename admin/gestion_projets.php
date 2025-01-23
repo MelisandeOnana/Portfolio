@@ -40,11 +40,11 @@ if ($currentPage < 1) {
 $offset = max(0, ($currentPage - 1) * $projectsPerPage);
 
 // Récupérer les projets pour la page actuelle
-$sql = 'SELECT * FROM projets WHERE visible = 1';
+$sql = 'SELECT * FROM projets';
 if ($searchTerm) {
     $sql .= ' AND (titre LIKE :search OR description LIKE :search)';
 }
-$sql .= ' ORDER BY id DESC'; // Placer ORDER BY avant LIMIT et OFFSET
+$sql .= ' ORDER BY id DESC'; 
 $sql .= ' LIMIT :limit OFFSET :offset';
 $stmt = $pdo->prepare($sql);
 if ($searchTerm) {

@@ -124,7 +124,7 @@ $projetsPage = array_slice($projets, $offset, $projetsParPage);
             <p>Passionnée par le développement web, digitale et les technologies numériques. Explorez mes réalisations et découvrez mon parcours d'apprentissage.</p>
             <a href="#realisations" class="btn">En savoir plus</a>
             <br>
-            <a href="assets/pdf/cv_onana_melisande.pdf" class="btn" target="_blank">Mon CV</a>
+            <a href="assets/pdf/CV_onana_melisande.pdf" class="btn" target="_blank">Mon CV</a>
             <a href="https://github.com/MelisandeOnana" class="btn" target="_blank">GitHub</a>
             <a href="https://www.linkedin.com/in/m%C3%A9lisande-onana-ngono-7576512ba?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B8vu%2F5X1RRkik2bIAfoefFA%3D%3D" class="btn" target="_blank">LinkedIn</a>
         </div>
