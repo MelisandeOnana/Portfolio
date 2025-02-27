@@ -1,5 +1,10 @@
 <?php
 require_once '../includes/db_connect.php';
+// Vérifiez si l'utilisateur est connecté
+if (!isset($_SESSION['username'])) {
+    header("Location: ../Connexion.php"); // Redirige vers la page de connexion si non authentifié
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titre = !empty($_POST['titre']) ? $_POST['titre'] : NULL;

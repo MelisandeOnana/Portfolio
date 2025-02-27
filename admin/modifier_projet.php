@@ -2,6 +2,12 @@
 session_start();
 include '../includes/db_connect.php';
 
+// Vérifiez si l'utilisateur est connecté
+if (!isset($_SESSION['username'])) {
+    header("Location: ../Connexion.php"); // Redirige vers la page de connexion si non authentifié
+    exit();
+}
+
 // Récupérer les informations du projet à modifier
 if (isset($_GET['id'])) {
     $projectId = $_GET['id'];
