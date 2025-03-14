@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../includes/db_connect.php';
+include '../config/config.php';
 
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['username'])) {

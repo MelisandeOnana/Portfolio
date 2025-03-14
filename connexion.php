@@ -1,6 +1,6 @@
 <?php
 session_start(); // Démarrer la session
-include 'includes/db_connect.php';
+include 'config/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

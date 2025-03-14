@@ -1,13 +1,12 @@
 <?php
 session_start();
-include '../includes/db_connect.php';
+include '../config/config.php';
 
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['username'])) {
     header("Location: ../Connexion.php"); // Redirige vers la page de connexion si non authentifié
     exit();
 }
-
 // Déterminer le nombre total d'apprentissages
 $totalApprentissagesStmt = $pdo->query('SELECT COUNT(*) FROM apprentissages');
 $totalApprentissages = $totalApprentissagesStmt->fetchColumn();

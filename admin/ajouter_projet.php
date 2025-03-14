@@ -1,5 +1,7 @@
 <?php
-require_once '../includes/db_connect.php';
+session_start();
+include '../config/config.php';
+
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['username'])) {
     header("Location: ../Connexion.php"); // Redirige vers la page de connexion si non authentifié

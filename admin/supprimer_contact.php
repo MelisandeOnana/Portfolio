@@ -1,6 +1,6 @@
 <?php
 session_start(); // Démarrer la session
-include '../includes/db_connect.php';
+include '../config/config.php';
 
 // Récupérer l'ID de la demande de contact à supprimer
 $id = $_GET['id'];

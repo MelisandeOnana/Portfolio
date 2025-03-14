@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../includes/db_connect.php';
+include '../config/config.php';
 
 if (isset($_GET['id'])) {
     $apprentissageId = $_GET['id'];

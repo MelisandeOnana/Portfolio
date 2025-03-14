@@ -7,7 +7,7 @@ require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/SMTP.php';
 
-include 'includes/db_connect.php';
+include '../config/config.php';
 
 $emailSent = false;
 

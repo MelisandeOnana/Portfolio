@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include 'includes/db_connect.php';
+include 'config/config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
