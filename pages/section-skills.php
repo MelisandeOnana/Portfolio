@@ -18,31 +18,42 @@ $result = $conn->query($sql);
 ?>
 <section id="skills">
     <div class="section-header">
-        <h2>Apprentissages</h2>
-        <p>Voici quelques-unes de mes compétences techniques.</p>
+        <h2>Compétences Techniques</h2>
+        <p>Découvrez mes compétences et certifications.</p>
     </div>
     <div class="skills-carousel">
+    <div class="skills-grid">
         <?php
         if ($result->num_rows > 0) {
-            // Afficher chaque compétence
             while($row = $result->fetch_assoc()) {
                 $dateDebut = new DateTime($row["date_debut"]);
+                $formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::NONE, IntlDateFormatter::NONE, NULL, NULL, 'MMMM yyyy');
                 echo '<div class="skill-card">';
-                echo '<div class="skill-logo"><i class="' . $row["logo"] . '"></i></div>';
-                echo '<h3 class="skill-title">' . $row["titre"] . '</h3>';
-                echo '<p>' . $row["description"] . '</p>';
-                echo '<p class="date">Depuis : ' . $dateDebut->format('F Y') . '</p>';
-                if ($row["pdf_certification"] !== NULL) {
-                    echo '<a href="' . $row["pdf_certification"] . '" target="_blank" class="btn">Voir la certification</a>';
-                } else if (in_array($row["titre"], ['HTML', 'CSS', 'PHP'])) {
-                    echo '<button class="btn btn-secondary" disabled>Certification en cours</button>';
-                }
+                    echo '<div class="skill-header">';
+                        echo '<i class="' . $row["logo"] . '"></i>';
+                        echo '<h3>' . $row["titre"] . '</h3>';
+                    echo '</div>';
+                    echo '<p class="date">Depuis : ' . $formatter->format($dateDebut) . '</p>';
+                    echo '<p>' . $row["description"] . '</p>';
+                    if (in_array($row["titre"], ['HTML', 'CSS', 'PHP'])) {
+                        echo '<a href="#" class="btn">Certification en cours</a>';
+                    } elseif ($row["pdf_certification"] !== NULL) {
+                        echo '<a href="' . $row["pdf_certification"] . '" target="_blank" class="btn">Voir la certification</a>';
+                    }
                 echo '</div>';
             }
         } else {
-            echo "0 résultats";
+            echo "<p>Aucune compétence enregistrée.</p>";
         }
-        $conn->close();
         ?>
     </div>
+    <!-- Conteneur pour les dots -->
+    <div class="dots-container">
+        <?php
+        for ($i = 0; $i < ceil($result->num_rows / 3); $i++) {
+            echo '<span class="dot" data-index="' . $i . '"></span>';
+        }
+        ?>
+    </div>
+</div>
 </section>

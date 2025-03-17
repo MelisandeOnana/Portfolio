@@ -1,29 +1,57 @@
-$(document).ready(function(){
-    $('.skills-carousel').slick({
-        infinite: true,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const skillCards = document.querySelectorAll(".skill-card");
+    const dots = document.querySelectorAll(".dot");
+    const totalCards = skillCards.length;
+    let currentIndex = 0;
+
+    function updateDots() {
+        dots.forEach(dot => dot.classList.remove("active"));
+        dots[Math.floor(currentIndex / 3)].classList.add("active");
+    }
+
+    function showNextCards() {
+        for (let i = 0; i < 3; i++) {
+            skillCards[(currentIndex + i) % totalCards].style.display = "none";
+        }
+        currentIndex = (currentIndex + 3) % totalCards;
+        for (let i = 0; i < 3; i++) {
+            skillCards[(currentIndex + i) % totalCards].style.display = "block";
+        }
+        updateDots();
+    }
+
+    function showPrevCards() {
+        for (let i = 0; i < 3; i++) {
+            skillCards[(currentIndex + i) % totalCards].style.display = "none";
+        }
+        currentIndex = (currentIndex - 3 + totalCards) % totalCards;
+        for (let i = 0; i < 3; i++) {
+            skillCards[(currentIndex + i) % totalCards].style.display = "block";
+        }
+        updateDots();
+    }
+
+    dots.forEach(dot => {
+        dot.addEventListener("click", function() {
+            const index = parseInt(this.getAttribute("data-index")) * 3;
+            for (let i = 0; i < 3; i++) {
+                skillCards[(currentIndex + i) % totalCards].style.display = "none";
             }
-        ]
+            currentIndex = index;
+            for (let i = 0; i < 3; i++) {
+                skillCards[(currentIndex + i) % totalCards].style.display = "block";
+            }
+            updateDots();
+        });
     });
+
+    for (let i = 0; i < 3; i++) {
+        skillCards[i].style.display = "block";
+    }
+    updateDots();
+
+    setInterval(showNextCards, 5000);
 });
 
 document.getElementById('contactForm').addEventListener('submit', function(event) {
