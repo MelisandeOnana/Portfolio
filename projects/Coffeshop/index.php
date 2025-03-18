@@ -181,7 +181,7 @@
             <h2>Nos Produits</h2>
             <ul>
                 <?php
-                include 'db_connection.php';
+                include 'config/db_connection.php';
 
                     // Vérifie la connexion
                     if ($conn->connect_error) {
@@ -193,9 +193,9 @@
 
                     // Récupération des produits
                     $sql = "SELECT p.id, p.nom, p.prix, p.note, m.nom AS marque, c.nom AS categorie 
-                            FROM produit p
-                            JOIN marque m ON p.marque_id = m.id
-                            JOIN categorie c ON p.categorie_id = c.id";
+                    FROM produit p
+                    JOIN marque m ON p.marque_id = m.id
+                    JOIN categorie_cafee c ON p.categorie_id = c.id";
                     
                     if ($search) {
                         $sql .= " WHERE p.nom LIKE '%$search%'";

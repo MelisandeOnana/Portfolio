@@ -1,6 +1,6 @@
 <?php
 // Fichier de connexion à la base de données
-include 'db_connection.php';
+include 'config/db_connection.php';
 
 // Vérifie si la connexion à la base de données a échoué
 if ($conn->connect_error) {

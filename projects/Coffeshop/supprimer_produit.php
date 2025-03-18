@@ -1,6 +1,7 @@
 <?php
 // Fichier de connexion à la base de données
-include 'db_connection.php';
+include 'config/db_connection.php';
+
 
 // Requête est de type POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

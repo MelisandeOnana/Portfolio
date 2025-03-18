@@ -1,5 +1,6 @@
 <?php
-include 'db_connection.php';
+ include 'config/db_connection.php';
+
 include 'functions.php';
 
 // Récupération de l'identifiant du produit à partir de l'URL

@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Si aucune erreur n'est présente, insertion dans la base de données
     if (empty($errors)) {
-        include 'db_connection.php'; // Fichier de connexion à la base de données
+        include 'config/db_connection.php';
 
         // Vérification de la connexion
         if ($conn->connect_error) {
