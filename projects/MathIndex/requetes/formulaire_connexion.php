@@ -44,7 +44,7 @@
                 
             ];
             // On affiche les informations de contact.
-            $query = "SELECT * FROM user where email=:email AND password=:password";
+            $query = "SELECT * FROM user_mathindex where email=:email AND password=:password";
             $stmt = $mysqlClient->prepare($query);
             $stmt->bindParam(":email", $informations['email']);
             $stmt->bindParam(":password", $informations['password']);

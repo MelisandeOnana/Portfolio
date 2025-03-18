@@ -92,7 +92,7 @@
                 $tmp_name = $_FILES["photo_profil"]["tmp_name"];
                 $name = basename($_FILES["photo_profil"]["name"]);
                 move_uploaded_file($tmp_name, "$uploads_dir/$name");
-                $stmt = $mysqlClient->prepare("INSERT INTO user(last_name,first_name,email,role,password,profile_photo_file) VALUES(:last_name,:first_name,:email,:role,:password,:profile_photo_file);");
+                $stmt = $mysqlClient->prepare("INSERT INTO user_mathindex(last_name,first_name,email,role,password,profile_photo_file) VALUES(:last_name,:first_name,:email,:role,:password,:profile_photo_file);");
                 $stmt->bindParam(":last_name", $_POST['nom_contributeur']);
                 $stmt->bindParam(":first_name", $_POST['prenom_contributeur']);
                 $stmt->bindParam(":email", $_POST['email_contributeur']);
@@ -101,7 +101,7 @@
                 $stmt->bindParam(":profile_photo_file", $_FILES['photo_profil']['name']);
                 $stmt->execute();
             }else{
-                $stmt = $mysqlClient->prepare("INSERT INTO user(last_name,first_name,email,role,password) VALUES(:last_name,:first_name,:email,:role,:password);");
+                $stmt = $mysqlClient->prepare("INSERT INTO user_mathindex(last_name,first_name,email,role,password) VALUES(:last_name,:first_name,:email,:role,:password);");
                 $stmt->bindParam(":last_name", $_POST['nom_contributeur']);
                 $stmt->bindParam(":first_name", $_POST['prenom_contributeur']);
                 $stmt->bindParam(":email", $_POST['email_contributeur']);
@@ -113,7 +113,7 @@
         }
         //script de modification contributeur
         if(isset($_POST['nom_contributeur']) && !empty($_POST['nom_contributeur']) && $_GET['add_contributeur'] === 'modify'){
-            $stmt = $mysqlClient->prepare("UPDATE user SET name=:name WHERE id=:id");
+            $stmt = $mysqlClient->prepare("UPDATE user_mathindex SET name=:name WHERE id=:id");
             $stmt->bindParam(":name", $_POST['nom_contributeur']);
             $stmt->bindParam(":id", $_GET['id']);
             $stmt->execute();
@@ -122,7 +122,7 @@
         }
         //script de recuperation du nom contributeur a modifier
         if(isset($_GET['id']) && isset($_GET['add_contributeur']) && $_GET['add_contributeur'] === 'modify'){
-            $stmt = $mysqlClient->prepare("SELECT * FROM user WHERE id=:id");
+            $stmt = $mysqlClient->prepare("SELECT * FROM user_mathindex WHERE id=:id");
             $stmt->bindParam(":id", $_GET['id']);
             $stmt->execute();
             $contributeur = $stmt -> fetchAll();
@@ -261,7 +261,7 @@
                         $offset = ($page_contributeurs - 1) * $contributeurs_par_page;
 
                         // Requête pour obtenir le nombre total d'exercices
-                        $sql_total_contributeurs = "SELECT COUNT(*) AS total FROM user";
+                        $sql_total_contributeurs = "SELECT COUNT(*) AS total FROM user_mathindex";
                         $result_total_contributeurs = $conn->query($sql_total_contributeurs);
                         $row_total_contributeurs = $result_total_contributeurs->fetch_assoc();
                         $total_contributeurs = $row_total_contributeurs['total'];
@@ -341,7 +341,7 @@
                                 <?php
 
                                 if (isset($_GET["recherche_contrib"])) {
-                                    $sql_search_contributeurs = "SELECT * FROM user
+                                    $sql_search_contributeurs = "SELECT * FROM user_mathindex
                                                         WHERE last_name LIKE '%" . $_GET["recherche_contrib"] . "%'
                                                         OR  first_name LIKE '%" . $_GET["recherche_contrib"] . "%'
                                                         OR email LIKE '%" . $_GET["recherche_contrib"] . "%'
@@ -351,7 +351,7 @@
                                 }
                                 else {
 
-                                    $sql_all_contributeurs = "SELECT * FROM user LIMIT $contributeurs_par_page OFFSET $offset";
+                                    $sql_all_contributeurs = "SELECT * FROM user_mathindex LIMIT $contributeurs_par_page OFFSET $offset";
 
                                     $result_all_contributeurs = $conn->query($sql_all_contributeurs);
                                 }
@@ -470,7 +470,7 @@
                     }
                     if (isset($_GET['confirmed_contributeurs']) && $_GET['confirmed_contributeurs'] == 'true') {
                         $id_contributeurs = $_GET['id'];
-                        $sql_supp = "DELETE FROM user WHERE id = $id_contributeurs";
+                        $sql_supp = "DELETE FROM user_mathindex WHERE id = $id_contributeurs";
                         $stmt_supp = $conn->prepare($sql_supp);
                         $stmt_supp->execute();
                         

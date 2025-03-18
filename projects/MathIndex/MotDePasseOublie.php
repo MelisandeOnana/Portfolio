@@ -29,7 +29,7 @@
         // Ok des données sont transmises.
         $errors = addMessageIfValueIsEmpty($errors, 'email');
 
-        $query = "SELECT email FROM user";
+        $query = "SELECT email FROM user_mathindex";
         $stmt = $mysqlClient->prepare($query);
 		$stmt->execute();
 		$result = $stmt->fetch();
@@ -42,7 +42,7 @@
         	$informations = [
 				'email' => htmlspecialchars($_POST['email']),
         	];
-            $query ="SELECT first_name ,last_name FROM user WHERE email=:email";
+            $query ="SELECT first_name ,last_name FROM user_mathindex WHERE email=:email";
             $stmt = $mysqlClient->prepare($query);
             $stmt->bindParam(":email", $informations['email']);
 		    $stmt->execute();

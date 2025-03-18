@@ -2,6 +2,12 @@
 session_start();
 
 include_once 'requetes/configdb.php';
+
+// Assurez-vous que la connexion à la base de données est établie
+if (!isset($mysqlClient) || !$mysqlClient) {
+    die("Connection failed: " . $mysqlClient->connect_error);
+}
+
 // Pagination
 $exercices_par_page = 5;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -136,11 +142,11 @@ $total_pages = ceil($total_exercices / $exercices_par_page);
                                     LEFT JOIN file AS file_exercice ON exercise.exercice_file_id = file_exercice.id
                                     LEFT JOIN file AS file_correction ON exercise.correction_file_id = file_correction.id
                                     ORDER BY exercise.date DESC LIMIT 3";
-                            $result = $conn->query($sql);
+                            $result = $mysqlClient->query($sql);
 
                             // Afficher les données dans le tableau HTML
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
+                            if ($result->rowCount() > 0) {
+                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<tr>";
                                         echo "<td>" . $row["exercise_name"] . "</td>";
                                         echo "<td>" . $row["thematic_name"] . "</td>";
@@ -196,11 +202,11 @@ $total_pages = ceil($total_exercices / $exercices_par_page);
                                     LEFT JOIN file AS file_correction ON exercise.correction_file_id = file_correction.id
                                     ORDER BY exercise.date DESC
                                     LIMIT $exercices_par_page OFFSET $offset";
-                            $result = $conn->query($sql);
+                            $result = $mysqlClient->query($sql);
 
                             // Afficher les données dans le tableau HTML
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
+                            if ($result->rowCount() > 0) {
+                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<tr>";
                                     echo "<td>" . $row["exercise_name"] . "</td>";
                                     echo "<td>" . $row["thematic_name"] . "</td>";
@@ -264,4 +270,3 @@ $total_pages = ceil($total_exercices / $exercices_par_page);
     </div>
 </body>
 </html>
-

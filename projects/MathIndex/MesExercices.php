@@ -5,6 +5,12 @@ if (!isset($_SESSION['account']['id'])) {
   header("Location: Connexion.php");
   exit();
 }
+
+// Assurez-vous que la connexion à la base de données est établie
+if (!isset($conn) || !$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+
 $exercices_par_page = 7;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $exercices_par_page;
@@ -157,6 +163,7 @@ if (isset($_GET['confirmed']) && $_GET['confirmed'] == 'true') {
         $result_no_exercice = $stmt_no_exercices->get_result();
         $row = $result_no_exercice->fetch_assoc();
         $count = $row['NbreEx'];
+        
         if ($count == 0) {
           echo "<tr><td><p>Vous n'avez pas ajouté d'exercices.</p></td></tr>";
         } else {
