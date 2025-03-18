@@ -85,6 +85,10 @@ section {
     overflow: hidden;
 }
 
+#home img{
+    width: 35px;
+}
+
 #home .circle {
     position: absolute;
     width: 500px;

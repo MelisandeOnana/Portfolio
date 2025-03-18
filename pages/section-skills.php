@@ -18,7 +18,7 @@ $result = $conn->query($sql);
 ?>
 <section id="skills">
     <div class="section-header">
-        <h2>Compétences Techniques</h2>
+        <h2>Mes apprentissages</h2>
         <p>Découvrez mes compétences et certifications.</p>
     </div>
     <div class="skills-carousel">

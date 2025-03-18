@@ -18,8 +18,8 @@
         <nav>
             <ul>
                 <li><a href="#home" class="active">Accueil</a></li>
-                <li><a href="#projects">Réalisations</a></li>
-                <li><a href="#skills">Apprentissages</a></li>
+                <li><a href="#projects">Mes Réalisations</a></li>
+                <li><a href="#skills">Mes Apprentissages</a></li>
                 <li><a href="#technology_watch">Veille technologique</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>

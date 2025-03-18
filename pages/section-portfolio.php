@@ -43,7 +43,7 @@ $projetsPage = array_slice($projets, $offset, $projetsParPage);
 
 <section id="projects">
     <div class="section-header">
-        <h2>Réalisations</h2>
+        <h2>Mes Réalisations</h2>
         <p>Voici quelques-uns de mes projets récents.</p>
     </div>
     <div class="projects-grid">
