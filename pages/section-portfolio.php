@@ -24,7 +24,7 @@ usort($projets, function($a, $b) {
 });
 
 // Défini le nombre de projets par page
-$projetsParPage = 3;
+$projetsParPage = 2;
 
 // Calcule le nombre total de pages
 $totalProjets = count($projets);

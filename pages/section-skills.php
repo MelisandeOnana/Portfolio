@@ -26,14 +26,29 @@ $result = $conn->query($sql);
         <?php
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                $dateDebut = new DateTime($row["date_debut"]);
-                $formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::NONE, IntlDateFormatter::NONE, NULL, NULL, 'MMMM yyyy');
                 echo '<div class="skill-card">';
                     echo '<div class="skill-header">';
                         echo '<i class="' . $row["logo"] . '"></i>';
                         echo '<h3>' . $row["titre"] . '</h3>';
                     echo '</div>';
-                    echo '<p class="date">Depuis : ' . $formatter->format($dateDebut) . '</p>';
+                    $mois = [
+                        'January' => 'Janvier',
+                        'February' => 'Février',
+                        'March' => 'Mars',
+                        'April' => 'Avril',
+                        'May' => 'Mai',
+                        'June' => 'Juin',
+                        'July' => 'Juillet',
+                        'August' => 'Août',
+                        'September' => 'Septembre',
+                        'October' => 'Octobre',
+                        'November' => 'Novembre',
+                        'December' => 'Décembre'
+                    ];
+                    
+                    $date = new DateTime($row["date_debut"]);
+                    $moisFrancais = $mois[$date->format('F')];
+                    echo '<p class="date">Depuis : ' . $moisFrancais . ' ' . $date->format('Y') . '</p>';
                     echo '<p>' . $row["description"] . '</p>';
                     if (in_array($row["titre"], ['HTML', 'CSS', 'PHP'])) {
                         echo '<a href="#" class="btn">Certification en cours</a>';

@@ -560,8 +560,8 @@ section p{
 }
 
 footer {
-    background: #FD4E5D;
-    color: #fff;
+    background: #fff;
+    color: #FD4E5D;
     text-align: center;
     padding: 10px 0;
     position: fixed;
