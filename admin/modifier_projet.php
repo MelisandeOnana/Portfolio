@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lien = $_POST['lien'] ?? '';
     $visible = isset($_POST['visible']) ? 1 : 0;
     $lien_github = $_POST['lien_github'] ?? '';
+    $technologies = $_POST['technologies'] ?? ''; 
 
      // Gestion de l'image
      if (!empty($_FILES['image']['name'])) {
@@ -53,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Requête de mise à jour
-    $query = "UPDATE projets SET titre = ?, description = ?, date_debut = ?, date_fin = ?, image = ?, lien = ?, visible = ?, documentation = ?, lien_github = ? WHERE id = ?";
+    $query = "UPDATE projets SET titre = ?, description = ?, date_debut = ?, date_fin = ?, image = ?, lien = ?, visible = ?, documentation = ?, lien_github = ?, technologies = ? WHERE id = ?";
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$titre, $description, $date_debut, $date_fin, $imagePath, $lien, $visible, $pdfPath, $lien_github, $projectId]);
+    $stmt->execute([$titre, $description, $date_debut, $date_fin, $imagePath, $lien, $visible, $pdfPath, $lien_github, $technologies, $projectId]);
 
     // Définir le message de succès
     $_SESSION['message'] = "Projet modifié avec succès.";
@@ -111,6 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="file" id="documentation" name="documentation">
                     <label for="lien_github">Lien GitHub</label>
                     <input type="url" id="lien_github" name="lien_github" value="<?= htmlspecialchars($projet['lien_github'] ?? '') ?>">
+                    <label for="technologies">Technologies</label>
+                    <input type="text" id="technologies" name="technologies" value="<?= htmlspecialchars($projet['technologies'] ?? '') ?>" required>
                     <button type="submit" class="btn">Mettre à jour</button>
                 </form>
             </section>

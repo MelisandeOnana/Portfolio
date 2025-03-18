@@ -59,6 +59,7 @@ $projetsPage = array_slice($projets, $offset, $projetsParPage);
                         <?php endif; ?>
                     </p>
                     <p><?= htmlspecialchars($projet['description']); ?></p>
+                    <p><strong>Technologies utilisées :</strong> <?= htmlspecialchars($projet['technologies']); ?></p>
                 </div>
                 <div class="btn-container">
                     <a href="<?= htmlspecialchars($projet['lien']); ?>" class="btn" target="_blank">Voir le projet</a>

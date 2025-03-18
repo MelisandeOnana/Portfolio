@@ -108,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project_id']))
                             </div>
                             <div class="project-info">
                                 <h3><?php echo htmlspecialchars($project['titre']); ?></h3>
+                                <p>Technologies utilisées : <?php echo htmlspecialchars($project['technologies']); ?></p>
                                 <p><?php echo htmlspecialchars($project['description']); ?></p>
                                 <p>Date de début : <?php echo (new DateTime($project['date_debut']))->format('m - Y'); ?></p>
                                 <?php if (!empty($project['date_fin'])): ?>

@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lien = !empty($_POST['lien']) ? $_POST['lien'] : NULL;
     $lien_github = !empty($_POST['lien_github']) ? $_POST['lien_github'] : NULL;
     $visible = isset($_POST['visible']) && $_POST['visible'] == 'oui' ? 1 : 0;
+    $technologies = !empty($_POST['technologies']) ? $_POST['technologies'] : NULL;
 
     // Gestion de l'image
     $imagePath = NULL;
@@ -36,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insertion dans la base de données
-    $stmt = $pdo->prepare("INSERT INTO projets (titre, description, date_debut, date_fin, image, lien, documentation, visible, lien_github) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$titre, $description, $date_debut, $date_fin, $imagePath, $lien, $pdfPath, $visible, $lien_github]);
+    $stmt = $pdo->prepare("INSERT INTO projets (titre, description, date_debut, date_fin, image, lien, documentation, visible, lien_github, technologies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$titre, $description, $date_debut, $date_fin, $imagePath, $lien, $pdfPath, $visible, $lien_github, $technologies]);
 
     echo "<script>alert('Projet ajouté avec succès !'); window.location.href='gestion_projets.php';</script>";
     exit();
@@ -83,6 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label for="lien_github">Lien Github:</label>
             <input type="text" id="lien_github" name="lien_github">
+
+            <label for="technologies">Technologies utilisées:</label>
+            <input type="text" id="technologies" name="technologies" required>
 
             <label for="visible">Visible:</label>
             <div>
