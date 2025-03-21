@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Récupérer les compétences depuis la base de données
-$sql = "SELECT titre, date_debut, logo, description, pdf_certification FROM apprentissages";
+$sql = "SELECT * FROM technologies ORDER BY date_debut DESC";
 $result = $conn->query($sql);
 ?>
 <section id="skills">
