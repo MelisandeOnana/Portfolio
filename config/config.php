@@ -10,7 +10,7 @@ if (!defined('DB_PASS')) {
     define('DB_PASS', '');
 }
 if (!defined('DB_NAME')) {
-    define('DB_NAME', 'portfolio');
+    define('DB_NAME', 'portfolio_bts_sio');
 }
 
 $servername = DB_HOST;

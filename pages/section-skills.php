@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Récupérer les compétences depuis la base de données
-$sql = "SELECT * FROM technologies ORDER BY date_debut DESC";
+$sql = "SELECT * FROM technologie";
 $result = $conn->query($sql);
 ?>
 <section id="skills">
@@ -24,42 +24,62 @@ $result = $conn->query($sql);
     <div class="skills-carousel">
     <div class="skills-grid">
         <?php
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                echo '<div class="skill-card">';
-                    echo '<div class="skill-header">';
-                        echo '<i class="' . $row["logo"] . '"></i>';
-                        echo '<h3>' . $row["titre"] . '</h3>';
-                    echo '</div>';
-                    $mois = [
-                        'January' => 'Janvier',
-                        'February' => 'Février',
-                        'March' => 'Mars',
-                        'April' => 'Avril',
-                        'May' => 'Mai',
-                        'June' => 'Juin',
-                        'July' => 'Juillet',
-                        'August' => 'Août',
-                        'September' => 'Septembre',
-                        'October' => 'Octobre',
-                        'November' => 'Novembre',
-                        'December' => 'Décembre'
-                    ];
-                    
-                    $date = new DateTime($row["date_debut"]);
-                    $moisFrancais = $mois[$date->format('F')];
-                    echo '<p class="date">Depuis : ' . $moisFrancais . ' ' . $date->format('Y') . '</p>';
-                    echo '<p>' . $row["description"] . '</p>';
-                    if (in_array($row["titre"], ['HTML', 'CSS', 'PHP'])) {
-                        echo '<a href="#" class="btn">Certification en cours</a>';
-                    } elseif ($row["pdf_certification"] !== NULL) {
-                        echo '<a href="' . $row["pdf_certification"] . '" target="_blank" class="btn">Voir la certification</a>';
+     if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            echo '<div class="skill-card">';
+                echo '<div class="skill-header">';
+                    // Ajouter l'icône pour chaque langage
+                    switch ($row["nom"]) {
+                        case 'HTML':
+                            echo '<i class="fab fa-html5"></i>';
+                            break;
+                        case 'CSS':
+                            echo '<i class="fab fa-css3-alt"></i>';
+                            break;
+                        case 'PHP':
+                            echo '<i class="fab fa-php"></i>';
+                            break;
+                        case 'JavaScript':
+                            echo '<i class="fab fa-js"></i>';
+                            break;
+                        case 'Laravel':
+                            echo '<i class="fab fa-laravel"></i>';
+                            break;
+                        case 'Symfony':
+                            echo '<i class="fab fa-symfony"></i>';
+                            break;
+                        case 'React':
+                            echo '<i class="fab fa-react"></i>';
+                            break;
+                        case 'Git':
+                            echo '<i class="fab fa-git"></i>';
+                            break;
+                        case 'GitHub':
+                            echo '<i class="fab fa-github"></i>';
+                            break;
+                        case 'SQL':
+                            echo '<i class="fas fa-database"></i>';
+                            break;
+                        
+                        default:
+                            echo '<i class="fas fa-code"></i>'; // Icône par défaut
+                            break;
                     }
+                    echo '<h3>' . $row["nom"] . '</h3>';
+                    $date = new DateTime();
+                    $formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, 'MMMM yyyy');
+                    $formattedDate = ucfirst($formatter->format($date));
+                    echo '<div class="skill-date">' . $formattedDate . '</div>';
+                    echo '<div class="skill-description">' . $row["description"] . '</div>';
                 echo '</div>';
-            }
-        } else {
-            echo "<p>Aucune compétence enregistrée.</p>";
+                if (in_array($row["nom"], ['HTML', 'CSS', 'PHP'])) {
+                    echo '<a href="#" class="btn">Certification en cours</a>';
+                } 
+            echo '</div>';
         }
+    } else {
+        echo "<p>Aucune compétence enregistrée.</p>";
+    }
         ?>
     </div>
     <!-- Conteneur pour les dots -->

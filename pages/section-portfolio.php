@@ -1,88 +1,73 @@
 <?php
-session_start(); // Démarrer la session
-include 'config/config.php'; // Inclure le fichier de configuration
+include 'config/config.php';
 
-// Récupére les projets depuis la base de données
-$stmt = $pdo->query('SELECT * FROM projets WHERE visible = 1');
-$projets = $stmt->fetchAll();
+// Utiliser la connexion PDO pour exécuter les requêtes
+try {
+    // Récupérer uniquement les langages de programmation utilisés dans les projets (sans CSS)
+    $techQuery = "SELECT DISTINCT t.nom FROM technologie t 
+                  JOIN projet_technologie pt ON t.id_technologie = pt.id_technologie 
+                  WHERE t.nom NOT IN ('CSS') ORDER BY t.nom";
+    $techResult = $pdo->query($techQuery);
 
-// Fonction pour formater les dates en français
-function formatDateFr($date) {
-    $months = [
-        1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril', 5 => 'Mai', 6 => 'Juin',
-        7 => 'Juillet', 8 => 'Août', 9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
-    ];
-    $dateTime = new DateTime($date);
-    $month = $months[(int)$dateTime->format('m')];
-    $year = $dateTime->format('Y');
-    return "$month $year";
+    // Filtrage par technologie
+    $filter = isset($_GET['technologie']) ? $_GET['technologie'] : '';
+
+    // Requête pour récupérer les projets
+    $sql = "SELECT p.id_projet, p.titre, p.description, p.date_debut, p.date_fin, p.lien, p.image,
+                   GROUP_CONCAT(t.nom SEPARATOR ', ') AS technologies
+            FROM projet p
+            LEFT JOIN projet_technologie pt ON p.id_projet = pt.id_projet
+            LEFT JOIN technologie t ON pt.id_technologie = t.id_technologie";
+
+    if (!empty($filter)) {
+        $sql .= " WHERE t.nom = :filter OR t.nom = 'CSS'";
+    }
+
+    $sql .= " GROUP BY p.id_projet";
+    $stmt = $pdo->prepare($sql);
+    if (!empty($filter)) {
+        $stmt->bindParam(':filter', $filter);
+    }
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Erreur lors de la récupération des données : " . $e->getMessage());
 }
-
-// Trie les projets par ordre décroissant de date de début
-usort($projets, function($a, $b) {
-    return strtotime($b['date_debut']) - strtotime($a['date_debut']);
-});
-
-// Défini le nombre de projets par page
-$projetsParPage = 2;
-
-// Calcule le nombre total de pages
-$totalProjets = count($projets);
-$totalPages = ceil($totalProjets / $projetsParPage);
-
-// Détermine la page actuelle
-$pageActuelle = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$pageActuelle = max(1, min($totalPages, $pageActuelle));
-
-// Calcule l'offset pour la requête SQL
-$offset = ($pageActuelle - 1) * $projetsParPage;
-
-// Récupére les projets pour la page actuelle
-$projetsPage = array_slice($projets, $offset, $projetsParPage);
 ?>
 
 <section id="projects">
     <div class="section-header">
         <h2>Mes Réalisations</h2>
-        <p>Voici quelques-uns de mes projets récents.</p>
+        <p>Découvrez mes projets.</p>
     </div>
+    
+    <div class="filter-container">
+        <form method="GET" class="filter-form">
+            <button type="submit" name="technologie" value="" class="filter-button <?php echo $filter == '' ? 'selected' : ''; ?>">Toutes</button>
+            <?php foreach ($techResult as $tech) { ?>
+                <button type="submit" name="technologie" value="<?php echo htmlspecialchars($tech['nom']); ?>" class="filter-button <?php echo $filter == $tech['nom'] ? 'selected' : ''; ?>">
+                    <?php echo htmlspecialchars($tech['nom']); ?>
+                </button>
+            <?php } ?>
+        </form>
+    </div>
+
     <div class="projects-grid">
-        <?php foreach ($projetsPage as $projet): ?>
-            <div class="project-card">
-                <img src="<?= htmlspecialchars($projet['image']); ?>" alt="<?= htmlspecialchars($projet['titre']); ?>">
-                <div class="project-content">
-                    <h3><?= htmlspecialchars($projet['titre']); ?></h3>
-                    <p>
-                        <?= ucfirst(formatDateFr($projet['date_debut'])); ?>
-                        <?php if (!is_null($projet['date_fin'])): ?>
-                            - <?= ucfirst(formatDateFr($projet['date_fin'])); ?>
-                        <?php endif; ?>
-                    </p>
-                    <p><?= htmlspecialchars($projet['description']); ?></p>
-                    <p><strong>Technologies utilisées :</strong> <?= htmlspecialchars($projet['technologies']); ?></p>
-                </div>
-                <div class="btn-container">
-                    <a href="<?= htmlspecialchars($projet['lien']); ?>" class="btn" target="_blank">Voir le projet</a>
-                    <?php if (!empty($projet['documentation'])): ?>
-                        <a href="<?= htmlspecialchars($projet['documentation']); ?>" class="btn" target="_blank">Voir documentation</a>
-                    <?php endif; ?>
-                    <?php if (!empty($projet['lien_github'])) : ?>
-                        <a href="<?= htmlspecialchars($projet['lien_github']); ?>" class="btn" target="_blank">Voir sur GitHub</a>
-                    <?php endif; ?>
-                </div>
+        <?php foreach ($result as $row) { ?>
+            <div class="project">
+                <?php if (!empty($row['image'])) { ?>
+                    <img src="assets/<?php echo htmlspecialchars($row['image']); ?>" alt="Image du projet">
+                <?php } ?>
+                <h2><?php echo htmlspecialchars($row['titre']); ?></h2>
+                <p><?php echo htmlspecialchars($row['description']); ?></p>
+                <p><strong>Technologies :</strong> <?php echo htmlspecialchars($row['technologies']); ?></p>
+                <?php if (!empty($row['lien'])) { ?>
+                    <p><a href="<?php echo htmlspecialchars($row['lien']); ?>" target="_blank">Voir le projet</a></p>
+                <?php } else { ?>
+                    <p><a href="galerie.php" target="_blank">Voir la galerie</a></p>
+                <?php } ?>
             </div>
-        <?php endforeach; ?>
-    </div>
-    <!-- Pagination -->
-    <div class="pagination">
-        <?php if ($pageActuelle > 1): ?>
-            <a href="?page=<?= $pageActuelle - 1 ?>#projects">&laquo; Précédent</a>
-        <?php endif; ?>
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="?page=<?= $i ?>#projects" class="<?= $i == $pageActuelle ? 'active' : '' ?>"><?= $i ?></a>
-        <?php endfor; ?>
-        <?php if ($pageActuelle < $totalPages): ?>
-            <a href="?page=<?= $pageActuelle + 1 ?>#projects">Suivant &raquo;</a>
-        <?php endif; ?>
+        <?php } ?>
     </div>
 </section>
