@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 // Déterminer le nombre total d'apprentissages
-$totalApprentissagesStmt = $pdo->query('SELECT COUNT(*) FROM apprentissages');
+$totalApprentissagesStmt = $pdo->query('SELECT COUNT(*) FROM technologie');
 $totalApprentissages = $totalApprentissagesStmt->fetchColumn();
 
 // Définir le nombre d'apprentissages par page
@@ -25,7 +25,7 @@ $pageActuelle = max(1, min($totalPages, $pageActuelle));
 $offset = ($pageActuelle - 1) * $apprentissagesParPage;
 
 // Récupérer les apprentissages pour la page actuelle
-$stmt = $pdo->prepare('SELECT * FROM apprentissages LIMIT :limit OFFSET :offset');
+$stmt = $pdo->prepare('SELECT * FROM technologie LIMIT :limit OFFSET :offset');
 $stmt->bindValue(':limit', $apprentissagesParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
@@ -60,25 +60,23 @@ $apprentissages = $stmt->fetchAll();
                 <table>
                     <thead>
                         <tr>
-                            <th>Titre</th>
+                            <th>Nom</th>
                             <th>Description</th>
                             <th>Date de Début</th>
                             <th>Certification</th>
-                            <th>Logo</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($apprentissages as $apprentissage): ?>
                             <tr>
-                                <td><?= htmlspecialchars($apprentissage['titre'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($apprentissage['nom'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($apprentissage['description'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($apprentissage['date_debut'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($apprentissage['certification'] ?? '') ?></td>
-                                <td><i class="<?= htmlspecialchars($apprentissage['logo'] ?? '') ?>"></i></td>
                                 <td class="actions">
-                                    <a href="modifier_apprentissage.php?id=<?= $apprentissage['id'] ?>" class="modify">Modifier</a>
-                                    <a href="supprimer_apprentissage.php?id=<?= $apprentissage['id'] ?>" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet apprentissage ?');">Supprimer</a>
+                                    <a href="modifier_apprentissage.php?id=<?= htmlspecialchars($apprentissage['id_technologie'] ?? '') ?>" class="modify">Modifier</a>
+                                    <a href="supprimer_apprentissage.php?id=<?= htmlspecialchars($apprentissage['id_technologie'] ?? '') ?>" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet apprentissage ?');">Supprimer</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

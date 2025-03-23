@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) {
 // Vérifiez si un contact doit être supprimé
 if (isset($_POST['delete_contact_id'])) {
     $contactId = (int)$_POST['delete_contact_id'];
-    $stmt = $pdo->prepare('DELETE FROM demandes_contact WHERE id = :id');
+    $stmt = $pdo->prepare('DELETE FROM contact WHERE id = :id');
     $stmt->bindValue(':id', $contactId, PDO::PARAM_INT);
     $stmt->execute();
 }
@@ -26,7 +26,7 @@ if ($page < 1) {
 }
 
 // Calcul du nombre total de contacts
-$totalContacts = $pdo->query('SELECT COUNT(*) FROM demandes_contact')->fetchColumn();
+$totalContacts = $pdo->query('SELECT COUNT(*) FROM contact')->fetchColumn();
 
 // Calcul du nombre total de pages
 $totalPages = ceil($totalContacts / $contactsPerPage);
@@ -35,7 +35,7 @@ $totalPages = ceil($totalContacts / $contactsPerPage);
 $offset = ($page - 1) * $contactsPerPage;
 
 // Récupération les contacts pour la page actuelle
-$stmt = $pdo->prepare('SELECT * FROM demandes_contact LIMIT :limit OFFSET :offset');
+$stmt = $pdo->prepare('SELECT * FROM contact LIMIT :limit OFFSET :offset');
 $stmt->bindValue(':limit', $contactsPerPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();

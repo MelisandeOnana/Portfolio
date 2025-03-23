@@ -61,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="logo">Logo (classe FontAwesome):</label>
                     <input type="text" id="logo" name="logo">
                 </div>
+                <a href="gestion_apprentissages.php" class="btn">Retour</a>
                 <button type="submit" class="btn">Ajouter</button>
             </form>
         </main>

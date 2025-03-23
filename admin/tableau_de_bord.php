@@ -10,22 +10,22 @@ if (!isset($_SESSION['username'])) {
 }
 
 function getTotalProjects($pdo) {
-    $stmt = $pdo->query('SELECT COUNT(*) FROM projets');
+    $stmt = $pdo->query('SELECT COUNT(*) FROM projet');
     return $stmt->fetchColumn();
 }
 
 function getTotalContacts($pdo) {
-    $stmt = $pdo->query('SELECT COUNT(*) FROM demandes_contact');
+    $stmt = $pdo->query('SELECT COUNT(*) FROM contact');
     return $stmt->fetchColumn();
 }
 
 function getTotalApprentissages($pdo) {
-    $stmt = $pdo->query('SELECT COUNT(*) FROM apprentissages');
+    $stmt = $pdo->query('SELECT COUNT(*) FROM technologie');
     return $stmt->fetchColumn();
 }
 
 function searchProjects($pdo, $searchTerm) {
-    $stmt = $pdo->prepare('SELECT * FROM projets WHERE titre LIKE :searchTerm OR description LIKE :searchTerm');
+    $stmt = $pdo->prepare('SELECT * FROM projet WHERE titre LIKE :searchTerm OR description LIKE :searchTerm');
     $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
     return $stmt->fetchAll();
 }

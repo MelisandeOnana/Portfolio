@@ -15,7 +15,7 @@ $projectsPerPage = 3;
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Calculer le nombre total de projets
-$sql = 'SELECT COUNT(*) FROM projets WHERE visible = 1';
+$sql = 'SELECT COUNT(*) FROM projet WHERE visible = 1';
 if ($searchTerm) {
     $sql .= ' AND (titre LIKE :search OR description LIKE :search)';
 }
@@ -40,13 +40,18 @@ if ($currentPage < 1) {
 // Calcule l'offset pour la requête SQL
 $offset = max(0, ($currentPage - 1) * $projectsPerPage);
 
-// Récupére les projets pour la page actuelle
-$sql = 'SELECT * FROM projets';
+// Récupére les projets pour la page actuelle avec les technologies associées
+$sql = 'SELECT p.*, GROUP_CONCAT(t.nom SEPARATOR ", ") AS technologies
+        FROM projet p
+        LEFT JOIN projet_technologie pt ON p.id_projet = pt.id_projet
+        LEFT JOIN technologie t ON pt.id_technologie = t.id_technologie
+        WHERE p.visible = 1';
 if ($searchTerm) {
-    $sql .= ' AND (titre LIKE :search OR description LIKE :search)';
+    $sql .= ' AND (p.titre LIKE :search OR p.description LIKE :search)';
 }
-$sql .= ' ORDER BY id DESC'; 
-$sql .= ' LIMIT :limit OFFSET :offset';
+$sql .= ' GROUP BY p.id_projet
+          ORDER BY p.id_projet DESC
+          LIMIT :limit OFFSET :offset';
 $stmt = $pdo->prepare($sql);
 if ($searchTerm) {
     $stmt->bindValue(':search', '%' . $searchTerm . '%', PDO::PARAM_STR);
@@ -54,14 +59,14 @@ if ($searchTerm) {
 $stmt->bindValue(':limit', $projectsPerPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
-$projects = $stmt->fetchAll();
+$projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Supprimer un projet
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project_id'])) {
     $deleteProjectId = $_POST['delete_project_id'];
-    $sql = 'DELETE FROM projets WHERE id = :id';
+    $sql = 'DELETE FROM projet WHERE id_projet = :id_projet';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $deleteProjectId, PDO::PARAM_INT);
+    $stmt->bindValue(':id_projet', $deleteProjectId, PDO::PARAM_INT);
     $stmt->execute();
 
     header('Location: gestion_projets.php');
@@ -99,35 +104,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project_id']))
             <button onclick="window.location.href='ajouter_projet.php'">Ajouter un projet</button>
             <?php if ($projects): ?>
                 <div class="projects-grid">
-                    <?php foreach ($projects as $project): ?>
-                        <div class="project-card">
-                            <div class="project-image">
-                                <?php if ($project['image']): ?>
-                                    <img src="../<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['titre']); ?>">
-                                <?php endif; ?>
-                            </div>
-                            <div class="project-info">
-                                <h3><?php echo htmlspecialchars($project['titre']); ?></h3>
-                                <p>Technologies utilisées : <?php echo htmlspecialchars($project['technologies']); ?></p>
-                                <p><?php echo htmlspecialchars($project['description']); ?></p>
-                                <p>Date de début : <?php echo (new DateTime($project['date_debut']))->format('m - Y'); ?></p>
-                                <?php if (!empty($project['date_fin'])): ?>
-                                    <p>Date de fin : <?php echo (new DateTime($project['date_fin']))->format('m - Y'); ?></p>
-                                <?php endif; ?>
-                                <?php if ($project['lien']): ?>
-                                    <p><a href="../<?php echo htmlspecialchars($project['lien']); ?>" target="_blank">Voir le projet</a></p>
-                                <?php endif; ?>
-                                <?php if ($project['documentation']): ?>
-                                    <button onclick="window.location.href='../<?php echo htmlspecialchars($project['documentation']); ?>'">Voir le document</button>
-                                <?php endif; ?>
-                                <button onclick="window.location.href='modifier_projet.php?id=<?php echo $project['id']; ?>'">Modifier</button>
-                                <form method="post" style="display:inline;">
-                                    <input type="hidden" name="delete_project_id" value="<?php echo $project['id']; ?>">
-                                    <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">Supprimer</button>
-                                </form>
-                            </div>
+                <?php foreach ($projects as $project): ?>
+                    <div class="project-card">
+                        <div class="project-image">
+                            <?php if (isset($project['image']) && $project['image']): ?>
+                                <img src="../assets/<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['titre']); ?>">
+                            <?php endif; ?>
                         </div>
-                    <?php endforeach; ?>
+                        <div class="project-info">
+                            <h3><?php echo htmlspecialchars($project['titre']); ?></h3>
+                            <p>Technologies utilisées : <?php echo isset($project['technologies']) ? htmlspecialchars($project['technologies']) : 'Non spécifié'; ?></p>
+                            <p><?php echo htmlspecialchars($project['description']); ?></p>
+                            <p>Date de début : <?php echo (new DateTime($project['date_debut']))->format('m - Y'); ?></p>
+                            <?php if (!empty($project['date_fin'])): ?>
+                                <p>Date de fin : <?php echo (new DateTime($project['date_fin']))->format('m - Y'); ?></p>
+                            <?php endif; ?>
+                            <?php if (isset($project['lien']) && $project['lien']): ?>
+                                <p><a href="../<?php echo htmlspecialchars($project['lien']); ?>" target="_blank">Voir le projet</a></p>
+                            <?php endif; ?>
+                            <?php if (isset($project['documentation']) && $project['documentation']): ?>
+                                <button onclick="window.location.href='../<?php echo htmlspecialchars($project['documentation']); ?>'">Voir le document</button>
+                            <?php endif; ?>
+                            <button onclick="window.location.href='modifier_projet.php?id_projet=<?php echo $project['id_projet']; ?>'">Modifier</button>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="delete_project_id" value="<?php echo $project['id_projet']; ?>">
+                                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
                 </div>
                 <div class="pagination">
                     <?php if ($currentPage > 1): ?>

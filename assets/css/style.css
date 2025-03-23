@@ -248,7 +248,6 @@ section p{
     text-decoration: underline;
 }
 
-
 .filter-container { display: flex; justify-content: center; margin-bottom: 20px; }
 .filter-button { 
     padding: 10px 20px; 
@@ -266,6 +265,38 @@ section p{
 }
 .filter-button.selected { 
     background-color: #e73370; 
+}
+
+#gallery {
+    padding: 20px;
+}
+
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.gallery-item {
+    flex: 1 1 calc(25% - 10px);
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid #FD4E5D; /* Couleur rose */
+    border-radius: 5px;
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(253, 78, 93, 0.3); /* Ombre rose */
 }
 
 #skills {

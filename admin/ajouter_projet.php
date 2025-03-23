@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config/config.php';
+require '../config/config.php'; // Fichier de connexion à la base de données
 
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['username'])) {
@@ -8,39 +8,92 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $titre = !empty($_POST['titre']) ? $_POST['titre'] : NULL;
-    $description = !empty($_POST['description']) ? $_POST['description'] : NULL;
-    $date_debut = !empty($_POST['date_debut']) ? $_POST['date_debut'] : NULL;
-    $date_fin = !empty($_POST['date_fin']) ? $_POST['date_fin'] : NULL;
-    $lien = !empty($_POST['lien']) ? $_POST['lien'] : NULL;
-    $lien_github = !empty($_POST['lien_github']) ? $_POST['lien_github'] : NULL;
-    $visible = isset($_POST['visible']) && $_POST['visible'] == 'oui' ? 1 : 0;
-    $technologies = !empty($_POST['technologies']) ? $_POST['technologies'] : NULL;
+// Vérifiez et créez le dossier uploads si nécessaire
+$target_dir = "../uploads/";
+if (!is_dir($target_dir)) {
+    mkdir($target_dir, 0777, true);
+}
 
-    // Gestion de l'image
-    $imagePath = NULL;
-    if (!empty($_FILES['image']['name'])) {
-        $imageName = basename($_FILES['image']['name']);
-        $imagePath = '../assets/images/' . $imageName;
-        move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
-        $imagePath = 'assets/images/' . $imageName; // Chemin relatif pour la base de données
+// Récupération des technologies disponibles
+$sql_technologies = "SELECT * FROM technologie";
+$stmt = $pdo->query($sql_technologies);
+$technologies = $stmt->fetchAll();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $titre = $_POST['titre'];
+    $description = $_POST['description'];
+    $date_debut = $_POST['date_debut'];
+    $date_fin = $_POST['date_fin'] ?? NULL;
+    $id_utilisateur = 1; // À adapter si plusieurs utilisateurs
+    $visible = isset($_POST['visible']) ? 1 : 0;
+    $github_links = $_POST['github_links'] ?? NULL;
+    $technologies_selected = $_POST['technologies'] ?? [];
+    $lien = $_POST['lien'] ?? NULL;
+
+    // Gestion du téléchargement des documents
+    $documents = [];
+    if (isset($_FILES['documents'])) {
+        foreach ($_FILES['documents']['name'] as $key => $name) {
+            if ($_FILES['documents']['error'][$key] == 0) {
+                $target_file = $target_dir . basename($name);
+                if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
+                    $documents[] = $target_file;
+                } else {
+                    echo "Erreur lors du téléchargement du fichier : $name.";
+                }
+            }
+        }
+    }
+    $documents = !empty($documents) ? json_encode($documents) : NULL;
+
+    // Gestion du téléchargement de l'image
+    $image = NULL;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            $image = $target_file;
+        } else {
+            echo "Erreur lors du téléchargement de l'image.";
+        }
     }
 
-    // Gestion de la documentation
-    $pdfPath = NULL;
-    if (!empty($_FILES['documentation']['name'])) {
-        $pdfName = basename($_FILES['documentation']['name']);
-        $pdfPath = '../assets/pdf/' . $pdfName;
-        move_uploaded_file($_FILES['documentation']['tmp_name'], $pdfPath);
-        $pdfPath = 'assets/pdf/' . $pdfName; // Chemin relatif pour la base de données
+    // Insertion du projet dans la table 'projet'
+    $sql_projet = "INSERT INTO projet (titre, description, date_debut, date_fin, id_utilisateur, visible, documents, github_links, image, lien)
+                   VALUES (:titre, :description, :date_debut, :date_fin, :id_utilisateur, :visible, :documents, :github_links, :image, :lien)";
+    $stmt_projet = $pdo->prepare($sql_projet);
+    $stmt_projet->execute([
+        ':titre' => $titre,
+        ':description' => $description,
+        ':date_debut' => $date_debut,
+        ':date_fin' => $date_fin,
+        ':id_utilisateur' => $id_utilisateur,
+        ':visible' => $visible,
+        ':documents' => $documents,
+        ':github_links' => $github_links,
+        ':image' => $image,
+        ':lien' => $lien
+    ]);
+    
+    // Récupérer l'ID du projet inséré
+    $id_projet = $pdo->lastInsertId();
+
+    // Insertion des technologies associées dans la table 'projet_technologie'
+    foreach ($technologies_selected as $id_technologie) {
+        $sql_projet_technologie = "INSERT INTO projet_technologie (id_projet, id_technologie)
+                                   VALUES (:id_projet, :id_technologie)";
+        $stmt_technologie = $pdo->prepare($sql_projet_technologie);
+        $stmt_technologie->execute([
+            ':id_projet' => $id_projet,
+            ':id_technologie' => $id_technologie
+        ]);
     }
 
-    // Insertion dans la base de données
-    $stmt = $pdo->prepare("INSERT INTO projets (titre, description, date_debut, date_fin, image, lien, documentation, visible, lien_github, technologies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$titre, $description, $date_debut, $date_fin, $imagePath, $lien, $pdfPath, $visible, $lien_github, $technologies]);
-
-    echo "<script>alert('Projet ajouté avec succès !'); window.location.href='gestion_projets.php';</script>";
+    // Redirection en fonction de la valeur du champ 'lien'
+    if (is_null($lien)) {
+        header("Location: ajouter_image_galerie.php?id_projet=$id_projet");
+    } else {
+        header("Location: gestion_projets.php");
+    }
     exit();
 }
 ?>
@@ -50,71 +103,90 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un Projet</title>
-    <link rel="stylesheet" href="../assets/css/ajouter_projet.css">
+    <title>Ajouter un projet</title>
+    <link rel="stylesheet" href="../assets/css/projet.css">
 </head>
 <body>
-    <main>
-        <header>
-            <h1>Ajouter un Projet</h1>
-        </header>
-        <form method="POST" action="ajouter_projet.php" enctype="multipart/form-data">
-            <label for="titre">Titre du Projet:</label>
-            <input type="text" id="titre" name="titre" required>
+    <h2>Ajouter un projet</h2>
+    <form method="post" enctype="multipart/form-data">
+        <label for="titre">Titre :</label>
+        <input type="text" name="titre" required><br>
 
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
+        <label for="description">Description :</label>
+        <textarea name="description" required></textarea><br>
 
-            <label for="date_debut">Date de Début:</label>
-            <input type="month" id="date_debut" name="date_debut" required>
+        <label for="date_debut">Date de début :</label>
+        <input type="date" name="date_debut" required><br>
 
-            <label for="date_fin">Date de Fin:</label>
-            <input type="month" id="date_fin" name="date_fin">
+        <label for="date_fin">Date de fin :</label>
+        <input type="date" name="date_fin"><br>
 
-            <label for="lien">Lien du Projet:</label>
-            <input type="text" id="lien" name="lien" value="projects/">
+        <label for="visible">Visible :</label>
+        <input type="checkbox" name="visible" checked><br>
 
-            <label for="image">Image du Projet:</label>
-            <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)">
+        <label for="documents">Documents :</label>
+        <input type="file" name="documents[]" multiple><br>
 
-            <img id="imagePreview" src="#" alt="Aperçu de l'image" style="display:none; max-width: 50%; height: auto; margin-top: 10px;">
+        <label for="image">Image :</label>
+        <input type="file" name="image" onchange="previewImage(event)"><br>
+        <img id="imagePreview" src="#" alt="Aperçu de l'image" style="display: none; max-width: 200px; max-height: 200px;"><br>
 
-            <label for="documentation">Documentation du Projet (PDF):</label>
-            <input type="file" id="documentation" name="documentation" accept="application/pdf">
+        <label for="github_links">Liens GitHub :</label>
+        <textarea name="github_links"></textarea><br>
 
-            <label for="lien_github">Lien Github:</label>
-            <input type="text" id="lien_github" name="lien_github">
+        <label for="lien">Lien :</label>
+        <input type="text" name="lien"><br>
 
-            <label for="technologies">Technologies utilisées:</label>
-            <input type="text" id="technologies" name="technologies" required>
+        <label for="technologies">Technologies :</label>
+        <select id="technologies">
+            <?php foreach ($technologies as $tech) : ?>
+                <option value="<?= $tech['id_technologie'] ?>"><?= $tech['nom'] ?></option>
+            <?php endforeach; ?>
+        </select><br>
 
-            <label for="visible">Visible:</label>
-            <div>
-                <input type="radio" id="visible_oui" name="visible" value="oui">
-                <label for="visible_oui">Oui</label>
-                <input type="radio" id="visible_non" name="visible" value="non" checked>
-                <label for="visible_non">Non</label>
-            </div>
+        <button type="button" onclick="addTechnology()">Ajouter à la sélection</button><br>
 
-            <button type="submit">Ajouter</button>
-            <button type="button" onclick="window.history.back();">Retour</button>
-        </form>
-    </main>
+        <label for="selectedTechnologies">Technologies sélectionnées :</label>
+        <select id="selectedTechnologies" name="technologies[]" size="5" multiple class="technologies-list">
+        </select><br>
+
+        <button type="button" onclick="removeTechnology()">Supprimer de la sélection</button><br>
+
+        <a href="gestion_projets.php">Retour</a>
+        <button type="submit">Ajouter</button>
+    </form>
 
     <script>
-        function previewImage(event) {
-            const input = event.target;
-            const preview = document.getElementById('imagePreview');
-            const reader = new FileReader();
+        // Fonction pour ajouter une technologie à la liste des sélectionnées
+        function addTechnology() {
+            var select = document.getElementById('technologies');
+            var selected = select.options[select.selectedIndex];
+            var list = document.getElementById('selectedTechnologies');
 
-            reader.onload = function() {
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            };
-
-            if (input.files && input.files[0]) {
-                reader.readAsDataURL(input.files[0]);
+            // Empêche l'ajout si déjà sélectionné
+            if (!Array.from(list.options).some(option => option.value === selected.value)) {
+                var option = document.createElement("option");
+                option.text = selected.text;
+                option.value = selected.value;
+                list.appendChild(option);
             }
+        }
+
+        // Fonction pour supprimer une technologie de la liste des sélectionnées
+        function removeTechnology() {
+            var list = document.getElementById('selectedTechnologies');
+            list.remove(list.selectedIndex);
+        }
+
+        // Fonction pour afficher l'aperçu de l'image sélectionnée
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 </body>

@@ -66,10 +66,9 @@ $result = $conn->query($sql);
                             break;
                     }
                     echo '<h3>' . $row["nom"] . '</h3>';
-                    $date = new DateTime();
+                    $dateDebut = new DateTime($row['date_debut']);
                     $formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, 'MMMM yyyy');
-                    $formattedDate = ucfirst($formatter->format($date));
-                    echo '<div class="skill-date">' . $formattedDate . '</div>';
+                    echo '<div class="date">' . htmlspecialchars(ucfirst($formatter->format($dateDebut))) . '</div>';
                     echo '<div class="skill-description">' . $row["description"] . '</div>';
                 echo '</div>';
                 if (in_array($row["nom"], ['HTML', 'CSS', 'PHP'])) {

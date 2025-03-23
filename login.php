@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Prévenir les injections SQL en utilisant des requêtes préparées
-    $sql = "SELECT * FROM administrateur WHERE nom_utilisateur = ? AND mot_de_passe = ?";
+    $sql = "SELECT * FROM utilisateur WHERE prenom = ? AND mot_de_passe = ?";
     $stmt = $pdo->prepare($sql);
     
     // Exécution de la requête avec les paramètres
