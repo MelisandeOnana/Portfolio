@@ -226,7 +226,7 @@ section p{
 
 .project h2 {
     margin-top: 0;
-    color: #ff4081;
+    color: #FD4E5D;
     font-size: 1.5em;
 }
 
@@ -237,14 +237,14 @@ section p{
 }
 
 .project a {
-    color: #ff4081;
+    color: #FD4E5D;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
 }
 
 .project a:hover {
-    color: #e73370;
+    color: #d54f5a;
     text-decoration: underline;
 }
 
@@ -253,7 +253,7 @@ section p{
     padding: 10px 20px; 
     border-radius: 5px; 
     border: 1px solid #ddd; 
-    background-color: #ff4081; 
+    background-color: #FD4E5D; 
     color: white; 
     cursor: pointer; 
     transition: background 0.3s, transform 0.2s; 
@@ -313,11 +313,39 @@ section p{
 
 .skills-carousel {
     position: relative;
-    width: 100%;
-    max-width: 1070px; /* S'assurer que la largeur permet d'afficher 3 cartes */
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skills-carousel .prev, .skills-carousel .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: #FD4E5D;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    border: none;
+}
+
+.skills-carousel .prev {
+    left: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.skills-carousel .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.skills-carousel .prev:hover, .skills-carousel .next:hover {
+    background-color: rgba(0,0,0,0.8);
 }
 
 .skills-grid {
@@ -336,6 +364,11 @@ section p{
     opacity: 0;
     transform: translateY(20px);
     animation: fadeUp 0.6s forwards;
+    display: none; /* Masquer toutes les cartes par défaut */
+}
+
+.skill-card.active {
+    display: block; /* Afficher uniquement les cartes actives */
 }
 
 /* Cartes invisibles sauf celles visibles */
@@ -382,21 +415,6 @@ section p{
 
 .skill-card .btn:hover {
     background-color: #ec4d5a;
-}
-
-.dots-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    cursor: pointer;
 }
 
 .dot.active {

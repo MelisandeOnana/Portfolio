@@ -9,7 +9,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Vérifiez et créez le dossier uploads si nécessaire
-$target_dir = "../uploads/";
+$target_dir = "../assets/pdf/";
 if (!is_dir($target_dir)) {
     mkdir($target_dir, 0777, true);
 }
@@ -73,14 +73,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':image' => $image,
         ':lien' => $lien
     ]);
-    
+
     // Récupérer l'ID du projet inséré
     $id_projet = $pdo->lastInsertId();
 
     // Insertion des technologies associées dans la table 'projet_technologie'
     foreach ($technologies_selected as $id_technologie) {
         $sql_projet_technologie = "INSERT INTO projet_technologie (id_projet, id_technologie)
-                                   VALUES (:id_projet, :id_technologie)";
+                        VALUES (:id_projet, :id_technologie)";
         $stmt_technologie = $pdo->prepare($sql_projet_technologie);
         $stmt_technologie->execute([
             ':id_projet' => $id_projet,
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Redirection en fonction de la valeur du champ 'lien'
-    if (is_null($lien)) {
+    if (empty($lien)) {
         header("Location: ajouter_image_galerie.php?id_projet=$id_projet");
     } else {
         header("Location: gestion_projets.php");
@@ -137,57 +137,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="lien">Lien :</label>
         <input type="text" name="lien"><br>
 
-        <label for="technologies">Technologies :</label>
-        <select id="technologies">
-            <?php foreach ($technologies as $tech) : ?>
-                <option value="<?= $tech['id_technologie'] ?>"><?= $tech['nom'] ?></option>
-            <?php endforeach; ?>
-        </select><br>
+        <label for="technologies">Technologies :</label><br>
+        <?php foreach ($technologies as $tech) : ?>
+            <input type="checkbox" id="tech_<?= $tech['id_technologie'] ?>" name="technologies[]" value="<?= $tech['id_technologie'] ?>">
+            <label for="tech_<?= $tech['id_technologie'] ?>"><?= $tech['nom'] ?></label><br>
+        <?php endforeach; ?><br>
 
-        <button type="button" onclick="addTechnology()">Ajouter à la sélection</button><br>
-
-        <label for="selectedTechnologies">Technologies sélectionnées :</label>
-        <select id="selectedTechnologies" name="technologies[]" size="5" multiple class="technologies-list">
-        </select><br>
-
-        <button type="button" onclick="removeTechnology()">Supprimer de la sélection</button><br>
-
-        <a href="gestion_projets.php">Retour</a>
+        <a class="back" href="gestion_projets.php">Retour</a>
         <button type="submit">Ajouter</button>
     </form>
-
-    <script>
-        // Fonction pour ajouter une technologie à la liste des sélectionnées
-        function addTechnology() {
-            var select = document.getElementById('technologies');
-            var selected = select.options[select.selectedIndex];
-            var list = document.getElementById('selectedTechnologies');
-
-            // Empêche l'ajout si déjà sélectionné
-            if (!Array.from(list.options).some(option => option.value === selected.value)) {
-                var option = document.createElement("option");
-                option.text = selected.text;
-                option.value = selected.value;
-                list.appendChild(option);
-            }
-        }
-
-        // Fonction pour supprimer une technologie de la liste des sélectionnées
-        function removeTechnology() {
-            var list = document.getElementById('selectedTechnologies');
-            list.remove(list.selectedIndex);
-        }
-
-        // Fonction pour afficher l'aperçu de l'image sélectionnée
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function(){
-                var output = document.getElementById('imagePreview');
-                output.src = reader.result;
-                output.style.display = 'block';
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
 </body>
 </html>

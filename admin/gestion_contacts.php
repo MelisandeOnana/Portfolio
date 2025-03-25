@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) {
 // Vérifiez si un contact doit être supprimé
 if (isset($_POST['delete_contact_id'])) {
     $contactId = (int)$_POST['delete_contact_id'];
-    $stmt = $pdo->prepare('DELETE FROM contact WHERE id = :id');
+    $stmt = $pdo->prepare('DELETE FROM demande_contact WHERE id = :id');
     $stmt->bindValue(':id', $contactId, PDO::PARAM_INT);
     $stmt->execute();
 }
@@ -59,6 +59,7 @@ $contacts = $stmt->fetchAll();
                 <ul>
                     <li><a href="tableau_de_bord.php">Tableau de bord</a></li>
                     <li><a href="gestion_apprentissages.php">Gestion des Apprentissages</a></li>
+                    <li><a href="gestion_images.php">Gestion des Images</a></li>
                     <li><a href="gestion_projets.php">Gestion des Projets</a></li>
                     <li><a href="../logout.php">Déconnexion</a></li>
                 </ul>

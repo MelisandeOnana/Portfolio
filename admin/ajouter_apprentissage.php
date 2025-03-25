@@ -9,16 +9,14 @@ if (!isset($_SESSION['username'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $titre = htmlspecialchars($_POST["titre"]);
+    $nom = htmlspecialchars($_POST["nom"]);
     $description = htmlspecialchars($_POST["description"]);
     $date_debut = htmlspecialchars($_POST["date_debut"]);
-    $certification = htmlspecialchars($_POST["certification"]);
-    $logo = htmlspecialchars($_POST["logo"]);
 
     // Requête d'insertion
-    $query = "INSERT INTO apprentissages (titre, description, date_debut, certification, logo) VALUES (?, ?, ?, ?, ?)";
+    $query = "INSERT INTO technologie (nom, description, date_debut) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$titre, $description, $date_debut, $certification, $logo]);
+    $stmt->execute([$nom, $description, $date_debut]);
 
     // Redirection après ajout
     $_SESSION['message'] = "Apprentissage ajouté avec succès.";
@@ -42,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <main>
             <form method="POST" action="ajouter_apprentissage.php">
                 <div class="form-group">
-                    <label for="titre">Titre:</label>
-                    <input type="text" id="titre" name="titre" required>
+                    <label for="nom">Nom:</label>
+                    <input type="text" id="nom" name="nom" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
@@ -52,14 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label for="date_debut">Date de Début:</label>
                     <input type="date" id="date_debut" name="date_debut" required>
-                </div>
-                <div class="form-group">
-                    <label for="certification">Certification (URL):</label>
-                    <input type="text" id="certification" name="certification">
-                </div>
-                <div class="form-group">
-                    <label for="logo">Logo (classe FontAwesome):</label>
-                    <input type="text" id="logo" name="logo">
                 </div>
                 <a href="gestion_apprentissages.php" class="btn">Retour</a>
                 <button type="submit" class="btn">Ajouter</button>

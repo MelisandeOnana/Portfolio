@@ -8,10 +8,9 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Récupérer les informations de l'apprentissage à modifier
 if (isset($_GET['id'])) {
     $apprentissageId = $_GET['id'];
-    $stmt = $pdo->prepare('SELECT * FROM apprentissages WHERE id = :id');
+    $stmt = $pdo->prepare('SELECT * FROM technologie WHERE id_technologie = :id');
     $stmt->bindValue(':id', $apprentissageId, PDO::PARAM_INT);
     $stmt->execute();
     $apprentissage = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -19,16 +18,14 @@ if (isset($_GET['id'])) {
 
 // Mettre à jour les informations de l'apprentissage
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $titre = $_POST['titre'] ?? '';
+    $nom = $_POST['nom'] ?? '';
     $description = $_POST['description'] ?? '';
     $date_debut = $_POST['date_debut'] ?? '';
-    $certification = $_POST['certification'] ?? '';
-    $logo = $_POST['logo'] ?? '';
 
     // Requête de mise à jour
-    $query = "UPDATE apprentissages SET titre = ?, description = ?, date_debut = ?, certification = ?, logo = ? WHERE id = ?";
+    $query = "UPDATE technologie SET nom = ?, description = ?, date_debut = ? WHERE id_technologie = ?";
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$titre, $description, $date_debut, $certification, $logo, $apprentissageId]);
+    $stmt->execute([$nom, $description, $date_debut, $apprentissageId]);
 
     // Redirection après mise à jour
     $_SESSION['message'] = "Apprentissage modifié avec succès.";
@@ -52,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <main>
             <form method="POST" action="modifier_apprentissage.php?id=<?= $apprentissageId ?>">
                 <div class="form-group">
-                    <label for="titre">Titre:</label>
-                    <input type="text" id="titre" name="titre" value="<?= htmlspecialchars($apprentissage['titre'] ?? '') ?>" required>
+                    <label for="nom">Nom:</label>
+                    <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($apprentissage['nom'] ?? '') ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
@@ -62,14 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <label for="date_debut">Date de Début:</label>
                     <input type="date" id="date_debut" name="date_debut" value="<?= htmlspecialchars($apprentissage['date_debut'] ?? '') ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="certification">Certification (URL):</label>
-                    <input type="text" id="certification" name="certification" value="<?= htmlspecialchars($apprentissage['certification'] ?? '') ?>">
-                </div>
-                <div class="form-group">
-                    <label for="logo">Logo (classe FontAwesome):</label>
-                    <input type="text" id="logo" name="logo" value="<?= htmlspecialchars($apprentissage['logo'] ?? '') ?>">
                 </div>
                 <button type="submit" class="btn">Mettre à jour</button>
                 <button type="back" class="btn">Retour</button>

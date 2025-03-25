@@ -25,11 +25,25 @@ $pageActuelle = max(1, min($totalPages, $pageActuelle));
 $offset = ($pageActuelle - 1) * $apprentissagesParPage;
 
 // Récupérer les apprentissages pour la page actuelle
-$stmt = $pdo->prepare('SELECT * FROM technologie LIMIT :limit OFFSET :offset');
+$stmt = $pdo->prepare('SELECT * FROM technologie ORDER BY date_debut DESC LIMIT :limit OFFSET :offset');
+
 $stmt->bindValue(':limit', $apprentissagesParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 $apprentissages = $stmt->fetchAll();
+
+// Vérifiez si une requête POST pour suppression a été envoyée
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_technologie_id'])) {
+    $deleteTechnologieId = (int)$_POST['delete_technologie_id'];
+    $sql = 'DELETE FROM technologie WHERE id_technologie = :id_technologie';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':id_technologie', $deleteTechnologieId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    header('Location: gestion_apprentissages.php');
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -47,6 +61,7 @@ $apprentissages = $stmt->fetchAll();
             <nav>
                 <ul>
                     <li><a href="tableau_de_bord.php">Tableau de bord</a></li>
+                    <li><a href="gestion_images.php">Gestion des Images</a></li>
                     <li><a href="gestion_projets.php">Gestion des projets</a></li>
                     <li><a href="gestion_contacts.php">Gestion des contacts</a></li>
                     <li><a href="../logout.php">Déconnexion</a></li>
@@ -73,11 +88,14 @@ $apprentissages = $stmt->fetchAll();
                                 <td><?= htmlspecialchars($apprentissage['nom'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($apprentissage['description'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($apprentissage['date_debut'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($apprentissage['certification'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($apprentissage['certification_pdf'] ?? '') ?></td>
                                 <td class="actions">
-                                    <a href="modifier_apprentissage.php?id=<?= htmlspecialchars($apprentissage['id_technologie'] ?? '') ?>" class="modify">Modifier</a>
-                                    <a href="supprimer_apprentissage.php?id=<?= htmlspecialchars($apprentissage['id_technologie'] ?? '') ?>" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet apprentissage ?');">Supprimer</a>
-                                </td>
+                                <a href="modifier_apprentissage.php?id=<?= htmlspecialchars($apprentissage['id_technologie'] ?? '') ?>" class="modify">Modifier</a>
+                                <form method="POST" action="" style="display:inline;">
+                                    <input type="hidden" name="delete_technologie_id" value="<?= htmlspecialchars($apprentissage['id_technologie'] ?? '') ?>">
+                                    <button type="submit" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet apprentissage ?');">Supprimer</button>
+                                </form>
+                        </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

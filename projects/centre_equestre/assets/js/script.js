@@ -107,4 +107,34 @@ document.addEventListener('DOMContentLoaded', function() {
     if (openNavBtn) {
         openNavBtn.addEventListener('click', openNav);
     }
+
+    const dots = document.querySelectorAll('.dot');
+    const skillCards = document.querySelectorAll('.skill-card');
+
+    function showSkills(index) {
+        skillCards.forEach(card => {
+            if (parseInt(card.getAttribute('data-index')) === index) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            showSkills(index);
+            dots.forEach(d => d.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Supprimer ou commenter la logique de changement automatique
+    // let currentIndex = 0;
+    // function autoChangeDots() {
+    //     currentIndex = (currentIndex + 1) % dots.length;
+    //     dots[currentIndex].click();
+    // }
+    // setInterval(autoChangeDots, 5000); // Changement automatique toutes les 5 secondes
 });

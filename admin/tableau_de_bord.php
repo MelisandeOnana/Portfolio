@@ -51,6 +51,7 @@ $projects = $searchTerm ? searchProjects($pdo, $searchTerm) : [];
             <ul>
                 <li><a href="gestion_projets.php">Gestion des Projets</a></li>
                 <li><a href="gestion_apprentissages.php">Gestion des Apprentissages</a></li>
+                <li><a href="gestion_images.php">Gestion des Images</a></li>
                 <li><a href="gestion_contacts.php">Gestion des Contacts</a></li>
                 <li><a href="../logout.php">Déconnexion</a></li>
             </ul>

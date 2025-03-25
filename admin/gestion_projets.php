@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project_id']))
             <nav>
                 <ul>
                     <li><a href="tableau_de_bord.php">Tableau de bord</a></li>
+                    <li><a href="gestion_images.php">Gestion des Images</a></li>
                     <li><a href="gestion_apprentissages.php">Gestion des Apprentissages</a></li>
                     <li><a href="gestion_contacts.php">Gestion des contacts</a></li>
                     <li><a href="../logout.php">Déconnexion</a></li>
@@ -104,35 +105,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project_id']))
             <button onclick="window.location.href='ajouter_projet.php'">Ajouter un projet</button>
             <?php if ($projects): ?>
                 <div class="projects-grid">
-                <?php foreach ($projects as $project): ?>
-                    <div class="project-card">
-                        <div class="project-image">
-                            <?php if (isset($project['image']) && $project['image']): ?>
-                                <img src="../assets/<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['titre']); ?>">
-                            <?php endif; ?>
+                    <?php foreach ($projects as $project): ?>
+                        <div class="project-card">
+                            <div class="project-image">
+                                <?php if (isset($project['image']) && $project['image']): ?>
+                                    <img src="../assets/<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['titre']); ?>">
+                                <?php endif; ?>
+                            </div>
+                            <div class="project-info">
+                                <h3><?php echo htmlspecialchars($project['titre']); ?></h3>
+                                <p>Technologies utilisées : <?php echo isset($project['technologies']) ? htmlspecialchars($project['technologies']) : 'Non spécifié'; ?></p>
+                                <p><?php echo htmlspecialchars($project['description']); ?></p>
+                                <p>Date de début : <?php echo (new DateTime($project['date_debut']))->format('m - Y'); ?></p>
+                                <?php if (!empty($project['date_fin'])): ?>
+                                    <p>Date de fin : <?php echo (new DateTime($project['date_fin']))->format('m - Y'); ?></p>
+                                <?php endif; ?>
+                                <?php if (isset($project['lien']) && $project['lien']): ?>
+                                    <p><a href="../<?php echo htmlspecialchars($project['lien']); ?>" target="_blank">Voir le projet</a></p>
+                                <?php endif; ?>
+                                <?php if (isset($project['documentation']) && $project['documentation']): ?>
+                                    <button onclick="window.location.href='../<?php echo htmlspecialchars($project['documentation']); ?>'">Voir le document</button>
+                                <?php endif; ?>
+                                <button onclick="window.location.href='modifier_projet.php?id_projet=<?php echo $project['id_projet']; ?>'">Modifier</button>
+                                <form method="post" style="display:inline;">
+                                    <input type="hidden" name="delete_project_id" value="<?php echo $project['id_projet']; ?>">
+                                    <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">Supprimer</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="project-info">
-                            <h3><?php echo htmlspecialchars($project['titre']); ?></h3>
-                            <p>Technologies utilisées : <?php echo isset($project['technologies']) ? htmlspecialchars($project['technologies']) : 'Non spécifié'; ?></p>
-                            <p><?php echo htmlspecialchars($project['description']); ?></p>
-                            <p>Date de début : <?php echo (new DateTime($project['date_debut']))->format('m - Y'); ?></p>
-                            <?php if (!empty($project['date_fin'])): ?>
-                                <p>Date de fin : <?php echo (new DateTime($project['date_fin']))->format('m - Y'); ?></p>
-                            <?php endif; ?>
-                            <?php if (isset($project['lien']) && $project['lien']): ?>
-                                <p><a href="../<?php echo htmlspecialchars($project['lien']); ?>" target="_blank">Voir le projet</a></p>
-                            <?php endif; ?>
-                            <?php if (isset($project['documentation']) && $project['documentation']): ?>
-                                <button onclick="window.location.href='../<?php echo htmlspecialchars($project['documentation']); ?>'">Voir le document</button>
-                            <?php endif; ?>
-                            <button onclick="window.location.href='modifier_projet.php?id_projet=<?php echo $project['id_projet']; ?>'">Modifier</button>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="delete_project_id" value="<?php echo $project['id_projet']; ?>">
-                                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">Supprimer</button>
-                            </form>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
                 <div class="pagination">
                     <?php if ($currentPage > 1): ?>

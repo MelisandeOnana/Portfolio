@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="images">Images :</label>
         <input type="file" name="images[]" multiple><br>
         <button type="submit">Ajouter les images</button>
+        <a class="back" href="gestion_projets.php">Retour</a>
     </form>
-    <a href="gestion_projets.php">Retour</a>
 </body>
 </html>

@@ -8,19 +8,23 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Récupérer l'ID du projet à modifier
-$id_projet = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+// Vérifiez et créez le dossier uploads si nécessaire
+$target_dir = "../uploads/";
+if (!is_dir($target_dir)) {
+    mkdir($target_dir, 0777, true);
+}
 
-// Récupérer les informations du projet
+// Récupération des technologies disponibles
+$sql_technologies = "SELECT * FROM technologie";
+$stmt = $pdo->query($sql_technologies);
+$technologies = $stmt->fetchAll();
+
+// Récupération des informations du projet à modifier
+$id_projet = $_GET['id_projet'];
 $sql_projet = "SELECT * FROM projet WHERE id_projet = :id_projet";
 $stmt_projet = $pdo->prepare($sql_projet);
 $stmt_projet->execute([':id_projet' => $id_projet]);
 $projet = $stmt_projet->fetch();
-
-// Récupération des technologies disponibles
-$sql_technologies = "SELECT * FROM technologie";
-$stmt_technologies = $pdo->query($sql_technologies);
-$technologies = $stmt_technologies->fetchAll();
 
 // Récupération des technologies associées au projet
 $sql_projet_technologies = "SELECT id_technologie FROM projet_technologie WHERE id_projet = :id_projet";
@@ -34,10 +38,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date_debut = $_POST['date_debut'];
     $date_fin = $_POST['date_fin'] ?? NULL;
     $visible = isset($_POST['visible']) ? 1 : 0;
+    $github_links = $_POST['github_links'] ?? NULL;
     $technologies_selected = $_POST['technologies'] ?? [];
+    $lien = $_POST['lien'] ?? NULL;
+
+    // Gestion du téléchargement des documents
+    $documents = [];
+    if (isset($_FILES['documents'])) {
+        foreach ($_FILES['documents']['name'] as $key => $name) {
+            if ($_FILES['documents']['error'][$key] == 0) {
+                $target_file = $target_dir . basename($name);
+                if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
+                    $documents[] = $target_file;
+                } else {
+                    echo "Erreur lors du téléchargement du fichier : $name.";
+                }
+            }
+        }
+    }
+    $documents = !empty($documents) ? json_encode($documents) : $projet['documents'];
+
+    // Gestion du téléchargement de l'image
+    $image = $projet['image'];
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            $image = $target_file;
+        } else {
+            echo "Erreur lors du téléchargement de l'image.";
+        }
+    }
 
     // Mise à jour du projet dans la table 'projet'
-    $sql_update_projet = "UPDATE projet SET titre = :titre, description = :description, date_debut = :date_debut, date_fin = :date_fin, visible = :visible WHERE id_projet = :id_projet";
+    $sql_update_projet = "UPDATE projet SET titre = :titre, description = :description, date_debut = :date_debut, date_fin = :date_fin, visible = :visible, documents = :documents, github_links = :github_links, image = :image, lien = :lien WHERE id_projet = :id_projet";
     $stmt_update_projet = $pdo->prepare($sql_update_projet);
     $stmt_update_projet->execute([
         ':titre' => $titre,
@@ -45,25 +78,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':date_debut' => $date_debut,
         ':date_fin' => $date_fin,
         ':visible' => $visible,
+        ':documents' => $documents,
+        ':github_links' => $github_links,
+        ':image' => $image,
+        ':lien' => $lien,
         ':id_projet' => $id_projet
     ]);
 
     // Suppression des anciennes technologies associées
-    $sql_delete_projet_technologies = "DELETE FROM projet_technologie WHERE id_projet = :id_projet";
-    $stmt_delete_projet_technologies = $pdo->prepare($sql_delete_projet_technologies);
-    $stmt_delete_projet_technologies->execute([':id_projet' => $id_projet]);
+    $sql_delete_technologies = "DELETE FROM projet_technologie WHERE id_projet = :id_projet";
+    $stmt_delete_technologies = $pdo->prepare($sql_delete_technologies);
+    $stmt_delete_technologies->execute([':id_projet' => $id_projet]);
 
     // Insertion des nouvelles technologies associées
     foreach ($technologies_selected as $id_technologie) {
-        $sql_insert_projet_technologie = "INSERT INTO projet_technologie (id_projet, id_technologie) VALUES (:id_projet, :id_technologie)";
-        $stmt_insert_projet_technologie = $pdo->prepare($sql_insert_projet_technologie);
-        $stmt_insert_projet_technologie->execute([
+        $sql_projet_technologie = "INSERT INTO projet_technologie (id_projet, id_technologie) VALUES (:id_projet, :id_technologie)";
+        $stmt_technologie = $pdo->prepare($sql_projet_technologie);
+        $stmt_technologie->execute([
             ':id_projet' => $id_projet,
             ':id_technologie' => $id_technologie
         ]);
     }
 
-    echo "Projet modifié avec succès !";
+    // Redirection en fonction de la valeur du champ 'lien'
+    if (empty($lien)) {
+        header("Location: ajouter_image_galerie.php?id_projet=$id_projet");
+    } else {
+        header("Location: gestion_projets.php");
+    }
+    exit();
 }
 ?>
 
@@ -77,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h2>Modifier un projet</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label for="titre">Titre :</label>
         <input type="text" name="titre" value="<?= htmlspecialchars($projet['titre'] ?? '') ?>" required><br>
 
@@ -93,51 +136,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="visible">Visible :</label>
         <input type="checkbox" name="visible" <?= $projet['visible'] ? 'checked' : '' ?>><br>
 
-        <label for="technologies">Technologies :</label>
-        <select id="technologies">
-            <?php foreach ($technologies as $tech) : ?>
-                <option value="<?= $tech['id_technologie'] ?>"><?= htmlspecialchars($tech['nom']) ?></option>
-            <?php endforeach; ?>
-        </select><br>
+        <label for="documents">Documents :</label>
+        <input type="file" name="documents[]" multiple><br>
 
-        <button type="button" onclick="addTechnology()">Ajouter à la sélection</button><br>
+        <label for="image">Image :</label>
+        <input type="file" name="image" onchange="previewImage(event)"><br>
+        <img id="imagePreview" src="../assets/<?= htmlspecialchars($projet['image'] ?? '') ?>" alt="Aperçu de l'image" style="display: <?= $projet['image'] ? 'block' : 'none' ?>; max-width: 200px; max-height: 200px;"><br>
 
-        <label for="selectedTechnologies">Technologies sélectionnées :</label>
-        <select id="selectedTechnologies" name="technologies[]" size="5" multiple class="technologies-list">
-            <?php foreach ($technologies as $tech) : ?>
-                <?php if (in_array($tech['id_technologie'], $projet_technologies)) : ?>
-                    <option value="<?= $tech['id_technologie'] ?>" selected><?= htmlspecialchars($tech['nom']) ?></option>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </select><br>
+        <label for="github_links">Liens GitHub :</label>
+        <textarea name="github_links"><?= htmlspecialchars($projet['github_links'] ?? '') ?></textarea><br>
 
-        <button type="button" onclick="removeTechnology()">Supprimer de la sélection</button><br>
+        <label for="lien">Lien :</label>
+        <input type="text" name="lien" value="<?= htmlspecialchars($projet['lien'] ?? '') ?>"><br>
 
-        <a href="gestion_projets.php">Retour</a>
+        <label for="technologies">Technologies :</label><br>
+        <?php foreach ($technologies as $tech) : ?>
+            <input type="checkbox" id="tech_<?= $tech['id_technologie'] ?>" name="technologies[]" value="<?= $tech['id_technologie'] ?>">
+            <label for="tech_<?= $tech['id_technologie'] ?>"><?= $tech['nom'] ?></label><br>
+        <?php endforeach; ?><br>
+
+        <a class="back" href="gestion_projets.php">Retour</a>
         <button type="submit">Modifier</button>
     </form>
-
-    <script>
-        // Fonction pour ajouter une technologie à la liste des sélectionnées
-        function addTechnology() {
-            var select = document.getElementById('technologies');
-            var selected = select.options[select.selectedIndex];
-            var list = document.getElementById('selectedTechnologies');
-
-            // Empêche l'ajout si déjà sélectionné
-            if (!Array.from(list.options).some(option => option.value === selected.value)) {
-                var option = document.createElement("option");
-                option.text = selected.text;
-                option.value = selected.value;
-                list.appendChild(option);
-            }
-        }
-
-        // Fonction pour supprimer une technologie de la liste des sélectionnées
-        function removeTechnology() {
-            var list = document.getElementById('selectedTechnologies');
-            list.remove(list.selectedIndex);
-        }
-    </script>
 </body>
 </html>
