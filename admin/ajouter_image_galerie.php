@@ -9,7 +9,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Vérifiez et créez le dossier uploads si nécessaire
-$target_dir = "../uploads/";
+$target_dir = "../assets/images/";
 if (!is_dir($target_dir)) {
     mkdir($target_dir, 0777, true);
 }
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter des images à la galerie</title>
-    <link rel="stylesheet" href="../assets/css/projet.css">
+    <link rel="stylesheet" href="../assets/css/images.css">
 </head>
 <body>
     <h2>Ajouter des images à la galerie du projet</h2>

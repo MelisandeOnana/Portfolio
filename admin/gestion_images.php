@@ -66,20 +66,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($images as $image): 
             if ($currentProject !== $image['titre']) {
                 if ($currentProject !== '') {
-                    echo '</ul>';
+                    echo '<button class="edit-gallery-btn" onclick="window.location.href=\'modifier_galerie.php?projet=' . urlencode($currentProject) . '\'">Modifier la galerie</button>';
+                    echo '</div>';
                 }
                 $currentProject = $image['titre'];
-                echo '<h3>' . htmlspecialchars($currentProject) . '</h3>';
-                echo '<button class="edit-gallery-btn" onclick="window.location.href=\'modifier_galerie.php?projet=' . urlencode($currentProject) . '\'">Modifier la galerie</button>';
-                echo '<ul>';
+                echo '<h3 style="text-align: left;">' . htmlspecialchars($currentProject) . '</h3>';
+                echo '<div class="gallery">';
             }
         ?>
-            <li>
-                <strong><?php echo htmlspecialchars($image['titre']); ?>:</strong>
-                <img src="../assets/<?php echo htmlspecialchars($image['image_path']); ?>" alt="Image du projet" width="100">
-            </li>
+            <img src="../assets/<?php echo htmlspecialchars($image['image_path']); ?>" 
+                alt="Image du projet" 
+                onclick="openModal(this.src)">
         <?php endforeach; ?>
-        </ul>
+        </div>
+        <button class="edit-gallery-btn" onclick="window.location.href='modifier_galerie.php?projet=<?php echo urlencode($currentProject); ?>'">Modifier la galerie</button>
+
+        <!-- Fenêtre modale -->
+        <div id="imageModal" class="modal" onclick="closeModal()">
+            <img id="modalImage">
+        </div>
     </div>
+    <script>
+function openModal(src) {
+    document.getElementById("modalImage").src = src;
+    document.getElementById("imageModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("imageModal").style.display = "none";
+}
+</script>
 </body>
 </html>
