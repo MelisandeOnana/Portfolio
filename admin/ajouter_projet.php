@@ -19,6 +19,14 @@ $sql_technologies = "SELECT * FROM technologie";
 $stmt = $pdo->query($sql_technologies);
 $technologies = $stmt->fetchAll();
 
+// Technologies à exclure
+$technologies_a_exclure = ['GitHub', 'Git', 'Visual Code', 'Visual Studio Code', 'Figma'];
+
+// Filtrer les technologies
+$technologies = array_filter($technologies, function($tech) use ($technologies_a_exclure) {
+    return !in_array($tech['nom'], $technologies_a_exclure);
+});
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
@@ -138,10 +146,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="lien"><br>
 
         <label for="technologies">Technologies :</label><br>
-        <?php foreach ($technologies as $tech) : ?>
-            <input type="checkbox" id="tech_<?= $tech['id_technologie'] ?>" name="technologies[]" value="<?= $tech['id_technologie'] ?>">
-            <label for="tech_<?= $tech['id_technologie'] ?>"><?= $tech['nom'] ?></label><br>
-        <?php endforeach; ?><br>
+        <div class="technologies-container">
+            <?php foreach ($technologies as $tech) : ?>
+                <input type="checkbox" id="tech_<?= $tech['id_technologie'] ?>" name="technologies[]" value="<?= $tech['id_technologie'] ?>">
+                <label for="tech_<?= $tech['id_technologie'] ?>" class="tech-label"><?= $tech['nom'] ?></label>
+            <?php endforeach; ?>
+        </div><br>
 
         <a class="back" href="gestion_projets.php">Retour</a>
         <button type="submit">Ajouter</button>

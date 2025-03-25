@@ -64,3 +64,23 @@ button:hover {
     margin-top: 10px;
     text-decoration: none;
 }
+
+.technologies-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.tech-label {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tech-label:hover {
+    background-color: #e0e0e0;
+}
