@@ -1,56 +1,23 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* Global Styles */
 body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-header, footer {
+header {
     background-color: #360C0C;
     color: #fff;
-}
-
-header {
-    padding: 15px; /* Réduction du padding */
+    padding: 30px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     position: relative;
-    background-color: #360C0C;
-    color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid #fff;
-    font-family: 'Playfair Display', serif;
 }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: auto;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-container p, .footer-container a {
-    margin: 5px 0;
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-container a:hover {
-    color: #fff;
-}
-
-/* Header Styles */
 .centre {
     display: flex;
     flex-direction: column;
@@ -107,10 +74,12 @@ footer {
     margin-right: 20px;
 }
 
+/* Bouton du dropdown */
 .login-btn {
     width: 35px;
 }
 
+/* Styles pour le bouton de bienvenue */
 .welcome-btn {
     background-color: #fff;
     color: #360C0C;
@@ -130,13 +99,14 @@ footer {
     color: #fff;
 }
 
-/* Dropdown Styles */
+/* Conteneur de dropdown */
 .dropdown {
     position: relative;
     display: inline-block;
-    text-align: center;
+    text-align: center; /* Ajouté pour centrer le contenu */
 }
 
+/* Contenu du dropdown (caché par défaut) */
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -146,18 +116,20 @@ footer {
     z-index: 1;
     text-align: center;
     border-radius: 4px;
-    margin-top: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    transform: translateY(-10px);
+    margin-top: 10px; /* Un peu d'espace entre le bouton et le menu */
+    opacity: 0; /* Début avec une opacité de 0 pour l'animation */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition pour l'animation */
+    transform: translateY(-10px); /* Début avec une légère translation vers le haut */
 }
 
+/* Afficher le contenu du dropdown */
 .dropdown.show .dropdown-menu {
     display: block;
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1; /* Opacité 1 pour afficher le contenu */
+    transform: translateY(0); /* Réinitialiser la translation */
 }
 
+/* Liens du dropdown */
 .dropdown-menu a {
     color: #360C0C;
     padding: 12px 16px;
@@ -166,11 +138,13 @@ footer {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Styles des liens au survol */
 .dropdown-menu a:hover {
     background-color: #360C0C;
     color: #fff;
 }
 
+/* Styles des boutons */
 .admin-btn, .logout-btn {
     background-color: #fff;
     color: #360C0C;
@@ -180,15 +154,16 @@ footer {
     transition: all 0.3s ease;
     padding: 8px 16px;
     border-radius: 4px;
-    margin: 5px 0;
+    margin: 5px 0; /* Espace entre les boutons */
 }
 
+/* Styles des boutons au survol */
 .admin-btn:hover, .logout-btn:hover {
     background-color: #360C0C;
     color: #fff;
 }
 
-/* Side Navigation Styles */
+/* Styles CSS pour la side nav */
 .sidenav {
     height: 100%;
     width: 0;
@@ -199,8 +174,8 @@ footer {
     overflow-x: hidden;
     transition: width 0.5s, opacity 0.5s;
     padding-top: 60px;
-    text-align: left;
-    z-index: 1000;
+    text-align: left; 
+    z-index: 1000; /* Assurez-vous que la side nav a un z-index élevé */
 }
 
 .sidenav ul {
@@ -228,7 +203,7 @@ footer {
 
 .sidenav ul li img {
     height: 32px;
-    margin-right: 10px;
+    margin-right: 10px; /* Ajoutez un espace entre l'icône et le texte */
 }
 
 .sidenav ul li:hover {
@@ -246,16 +221,14 @@ footer {
     text-align: center;
 }
 
-.sidenav.open {
-    left: 0; /* Affiché lorsqu'il est ouvert */
-}
-
 .sidenav .closebtn {
     position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+    top: 10px;
+    right: 15px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .sidenav .closebtn:hover {
@@ -263,7 +236,6 @@ footer {
     transform: rotate(90deg);
 }
 
-/* Main Content Styles */
 main {
     padding: 20px;
 }
@@ -280,83 +252,129 @@ main {
     font-size: 2em;
 }
 
-/* Video Container Styles */
+/* Styles CSS pour le conteneur de la vidéo */
 .video-conteneur {
     position: relative;
-    margin: 30px auto;
-    max-width: 900px;
+    padding-bottom: 100px; 
     overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 865px; /* Taille moyenne pour la vidéo */
+    margin: 0 auto; /* Centre le conteneur horizontalement */
 }
+
+video.responsive-video {
+    width: 100%; /* Assure que la vidéo prend toute la largeur du conteneur */
+    border-radius: 10px;
+}
+
 
 .video-conteneur img {
     display: none;
 }
 
-video.responsive-video {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-/* Team section styles */
+/* Styles améliorés pour la section équipe */
 .equipe {
-    padding: 40px 20px;
-    background-color: #fff;
-    text-align: center;
+    background-color: #f9f9f9;
+    padding: 60px 20px;
+    margin-bottom: 50px;
 }
 
 .equipe h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2em;
-    color: #502419;
-    margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #360C0C;
+    font-size: 2.5em;
+    font-weight: bold;
 }
 
+/* Styles pour la section équipe en liste horizontale */
 .membres-equipe {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     gap: 30px;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
 .membre {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 280px;
-    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.membre:nth-child(even) {
+    flex-direction: row-reverse; /* Alterne l'ordre pour chaque membre */
+}
+
 .membre:hover {
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.membre img, .membre video {
+.membre-img {
+    flex: 1;
+    max-width: 40%; /* Limite la largeur de l'image/vidéo */
+    overflow: hidden;
+    border-right: 3px solid #360C0C;
+}
+
+.membre:nth-child(even) .membre-img {
+    border-right: none;
+    border-left: 3px solid #360C0C;
+}
+
+.membre-img img, .membre-img video {
     width: 100%;
     height: auto;
-    border-bottom: 2px solid #ddd;
-    margin-bottom: 15px;
-    border-radius: 8px;
+    transition: transform 0.3s ease;
 }
 
-.membre h3 {
-    font-size: 1.5em;
-    color: #502419;
-    margin-bottom: 10px;
+.membre-img:hover img, .membre-img:hover video {
+    transform: scale(1.1);
 }
 
-.membre p {
-    font-size: 0.9em;
+.membre-contenu {
+    flex: 2;
+    padding: 20px;
+    text-align: left;
+}
+
+.membre-contenu h3 {
+    margin: 0 0 10px;
+    color: #360C0C;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.membre-contenu p {
+    font-size: 1em;
     color: #555;
-    line-height: 1.6;
+    line-height: 1.5;
+    margin-bottom: 15px;
 }
 
-/* Lightbox Styles */
+.membre-contenu .btn-details {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #360C0C;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.membre-contenu .btn-details:hover {
+    background-color: #5a1a1a;
+}
+
+
+/* Lightbox CSS */
 .lightbox {
     display: none;
     position: fixed;
@@ -397,18 +415,72 @@ video.responsive-video {
     cursor: pointer;
 }
 
-.close:hover, .close:focus {
+.close:hover,
+.close:focus {
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
 }
 
-/* Media Queries */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #360C0C;
+    color: #ffffff;
+    flex-wrap: wrap;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 5px;
+}
+
+.footer-center {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-right {
+    align-items: flex-end;
+}
+
+.footer-links {
+    margin-bottom: 10px;
+}
+
+.social-icon img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-icon img:hover {
+    transform: scale(1.1);
+}
+
+.footer-contact {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.footer-contact a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Media Query pour les écrans de taille maximale de 768px */
 @media screen and (max-width: 768px) {
+
     header {
         flex-direction: column;
     }
-
+    
     .header-title {
         font-size: 1.2em;
     }
@@ -425,7 +497,15 @@ video.responsive-video {
         margin-right: 0;
     }
 
-    .bar1, .bar2, .bar3 {
+    .bar1 {
+        width: 45px;
+    }
+
+    .bar2 {
+        width: 45px;
+    }
+
+    .bar3 {
         width: 45px;
     }
 
@@ -436,7 +516,7 @@ video.responsive-video {
     }
 
     .video-conteneur {
-        max-width: 100%;
+        max-width: 100%; /* Remettre la taille à 100% pour les écrans plus petits */
     }
 
     .responsive-video {
@@ -446,21 +526,83 @@ video.responsive-video {
     .video-conteneur img {
         display: block;
         width: 100%;
+        height: auto;
+        object-fit: cover;
     }
 
-    .membre video.responsive-video, .membre img {
+    /* Spécifiquement pour les vidéos dans les membres de l'équipe */
+    .membre video.responsive-video {
+        display: block; /* Assurez-vous que la vidéo est affichée */
+        width: 100%; /* Ajuster la largeur pour s'adapter à l'écran */
+        height: auto; /* Ajuster la hauteur automatiquement */
+    }
+
+    .membre img {
         display: block;
         width: 100%;
-        height: auto;
+        height: auto; /* Ajuster la hauteur automatiquement */
+    }
+
+    .membres-equipe {
+        flex-direction: column; /* Passe en disposition verticale */
+        gap: 20px; /* Réduit l'espacement entre les membres */
+    }
+
+    .membre {
+        flex-direction: column; /* Réorganise chaque membre en colonne */
+        text-align: center; /* Centre le contenu */
+    }
+
+    .membre:nth-child(even) {
+        flex-direction: column; /* Supprime l'alternance pour les petits écrans */
+    }
+
+    .membre-img {
+        max-width: 100%; /* Assure que l'image prend toute la largeur */
+        border: none; /* Supprime les bordures */
+    }
+
+    .membre-contenu {
+        padding: 10px; /* Réduit le padding pour économiser de l'espace */
+        text-align: center; /* Centre le texte */
+    }
+
+    .membre-contenu h3 {
+        font-size: 1.5em; /* Réduit légèrement la taille du titre */
+    }
+
+    .membre-contenu p {
+        font-size: 0.9em; /* Réduit la taille du texte */
+    }
+
+    .membre-contenu .btn-details {
+        font-size: 0.9em; /* Ajuste la taille du bouton */
+        padding: 8px 16px; /* Réduit le padding du bouton */
+    }
+
+    .footer-right {
+        align-items: flex-start; /* Aligne les liens à gauche */
+    }
+
+    .footer-links {
+        text-align: left; /* Assure que les liens sont alignés à gauche */
+    }
+
+    .footer-contact {
+        text-align: left; /* Aligne également les informations de contact à gauche */
     }
 }
 
+/* Media Query pour les écrans de taille maximale de 425px */
 @media screen and (max-width: 425px) {
+
+    /* Centre le conteneur principal */
     .container {
         flex-direction: column;
         align-items: center;
     }
 
+    /* Réduis la taille des titres pour une meilleure lisibilité */
     .title {
         font-size: 20px;
     }
@@ -470,24 +612,63 @@ video.responsive-video {
         margin-bottom: 10px;
     }
 
+    /* Ajuste la taille et le positionnement du bouton hamburger */
     .hamburger-menu {
         width: 30px;
         height: 20px;
     }
 
     .bar1, .bar2, .bar3 {
+        height: 2px;
+        background-color: #fff;
+    }
+
+    .bar1 {
         width: 30px;
     }
 
+    .bar2 {
+        width: 30px;
+    }
+
+    .bar3 {
+        width: 30px;
+    }
+
+    /* Centre le texte du conteneur de connexion */
     .login-container {
         margin-top: 20px;
         text-align: center;
         margin-right: 0;
     }
 
-    .membre video.responsive-video, .membre img {
+    /* Spécifiquement pour les vidéos dans les membres de l'équipe */
+    .membre video.responsive-video {
+        display: block; /* Assurez-vous que la vidéo est affichée */
+        width: 100%; /* Ajuster la largeur pour s'adapter à l'écran */
+        height: auto; /* Ajuster la hauteur automatiquement */
+    }
+
+    .membre img {
         display: block;
         width: 100%;
-        height: auto;
+        height: auto; /* Ajuster la hauteur automatiquement */
+    }
+
+    .equipe h2 {
+        font-size: 1.8em; /* Réduit la taille du titre principal */
+    }
+
+    .membre-contenu h3 {
+        font-size: 1.2em; /* Réduit encore la taille du titre */
+    }
+
+    .membre-contenu p {
+        font-size: 0.8em; /* Réduit davantage la taille du texte */
+    }
+
+    .membre-contenu .btn-details {
+        font-size: 0.8em; /* Ajuste encore la taille du bouton */
+        padding: 6px 12px; /* Réduit davantage le padding du bouton */
     }
 }

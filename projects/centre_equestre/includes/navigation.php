@@ -12,4 +12,3 @@
     </ul>
     <div class="closebtn" onclick="closeNav()">&times;</div>
 </nav>
-<button onclick="openNav()">Open Menu</button>

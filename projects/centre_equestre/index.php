@@ -1,7 +1,11 @@
 <?php
+include('config/config.php');
 session_start();
 // Vérification si l'utilisateur est connecté en tant qu'administrateur
 $isAdmin = isset($_SESSION['loggedin']) && $_SESSION['role'] === 'Administrateur';
+// Requête pour récupérer les membres de l'équipe
+$sql = "SELECT * FROM equipe";
+$result = $pdo->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -32,29 +36,32 @@ $isAdmin = isset($_SESSION['loggedin']) && $_SESSION['role'] === 'Administrateur
         <section class="equipe">
             <h2>Notre Équipe</h2>
             <div class="membres-equipe">
-                <div class="membre">
-                    <div class="membre-img">
-                        <img src="assets/images/diane.JPG" alt="Debaecker Diane" class="clickable-image">
-                    </div>
-                    <h3>Debaecker Diane</h3>
-                    <p>Diane est notre experte en formation des cavaliers adultes, spécialisée dans la préparation aux concours. Avec plusieurs années d'expérience, elle apporte rigueur et passion à chaque cours, guidant nos cavaliers vers l'excellence.</p>
-                </div>
-                <div class="membre">
-                    <div class="membre-img">
-                        <video class="responsive-video" autoplay muted loop>
-                            <source src="assets/videos/laetitia.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <h3>Debaecker Laëtitia</h3>
-                    <p>Fondatrice du Centre Équestre du Val d’Arré, Laëtitia a consacré sa vie à sa passion pour les chevaux. Aujourd'hui, elle se concentre principalement sur l'administration, mais continue d'apporter son expertise en tant que monitrice lorsque nécessaire. Sa vision et son leadership ont façonné le centre en ce qu'il est aujourd'hui.</p>
-                </div>
-                <div class="membre">
-                    <div class="membre-img">
-                        <img src="assets/images/marion.JPG" alt="Cavallaro Marion" class="clickable-image">
-                    </div>
-                    <h3>Cavallaro Marion</h3>
-                    <p>Marion est dédiée à l'apprentissage des enfants, rendant chaque leçon amusante et éducative. Son approche douce et patiente inspire les jeunes cavaliers, leur inculquant les bases de l'équitation avec un sourire constant.</p>
-                </div>
+                <?php
+                if ($result->rowCount() > 0) {
+                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<div class="membre">';
+                        echo '<div class="membre-img">';
+                        if (!empty($row['image_url'])) {
+                            echo '<img src="' . $row['image_url'] . '" alt="' . $row['nom'] . '">';
+                        } elseif (!empty($row['video_url'])) {
+                            echo '<video autoplay muted loop>';
+                            echo '<source src="' . $row['video_url'] . '" type="video/mp4">';
+                            echo '</video>';
+                        }
+                        echo '</div>';
+                        echo '<div class="membre-contenu">';
+                        echo '<h3>' . $row['nom'] . '</h3>';
+                        echo '<p>' . $row['description'] . '</p>';
+                        if (!empty($row['diplome_pdf'])) {
+                            echo '<a href="' . $row['diplome_pdf'] . '" target="_blank" class="btn-details">Voir le diplôme</a>';
+                        }
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<p>Aucun membre de l\'équipe trouvé.</p>';
+                }
+                ?>
             </div>
         </section>
     </main>

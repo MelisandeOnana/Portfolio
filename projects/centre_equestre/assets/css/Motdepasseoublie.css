@@ -195,34 +195,56 @@ form button:hover {
     background-color: #4d1515;
 }
 
-footer {
-    text-align: center;
+.footer-container {
+    display: flex;
+    justify-content: space-between;
     padding: 20px;
     background-color: #360C0C;
-    color: white;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+    color: #ffffff;
+    flex-wrap: wrap;
 }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+.footer-left,
+.footer-center,
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 5px;
 }
 
-.footer-container p {
-    margin: 5px 0;
+.footer-center {
+    flex: 1;
+    text-align: center;
 }
 
-.footer-container a {
-    color: #fff;
+.footer-right {
+    align-items: flex-end;
+}
+
+.footer-links {
+    margin-bottom: 10px;
+}
+
+.social-icon img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-icon img:hover {
+    transform: scale(1.1);
+}
+
+.footer-contact {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.footer-contact a {
+    color: #ffffff;
     text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-container a:hover {
-    color: #fff;
 }
 
 @media screen and (max-width: 768px) {

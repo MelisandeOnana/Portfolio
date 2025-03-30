@@ -12,17 +12,14 @@
     <div class="login-container">
         <?php if ($isAdmin): ?>
             <div class="dropdown">
-                <button class="welcome-btn">Bienvenue <br>
-                    <?php echo isset($_SESSION['prenom']) ? $_SESSION['prenom'] : 'Utilisateur'; ?>
-                    <?php echo isset($_SESSION['nom']) ? $_SESSION['nom'] : ''; ?>
-                </button>
+                <button class="welcome-btn">Bienvenue <br><?php echo $_SESSION['prenom'] . " " . $_SESSION['nom']; ?></button>
                 <div class="dropdown-menu">
-                    <a href="administration/admin_actualites.php" class="admin-btn">Administration</a>
+                    <a href="administration/admin_dashboard.php" class="admin-btn">Administration</a>
                     <a href="deconnexion.php" class="logout-btn">Déconnexion</a>
                 </div>
             </div>
         <?php else: ?>
-            <img class="login-btn" src="assets/images/icone_utilisateur.png" onclick="window.location.href='connexion.php'" alt="Se connecter">
+            <img class="login-btn" src="assets/images/icone_utilisateur.png" onclick="window.location.href='connexion.php'">
         <?php endif; ?>
     </div>
 </header>

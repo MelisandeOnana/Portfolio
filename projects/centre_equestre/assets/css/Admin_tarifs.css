@@ -317,34 +317,6 @@ header {
     transform: scale(1.05);
 }
 
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #360C0C;
-    color: white;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-container p {
-    margin: 5px 0;
-}
-
-.footer-container a {
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-container a:hover {
-    color: #ddd;
-}
-
 @media screen and (max-width: 768px) {
 
     header{

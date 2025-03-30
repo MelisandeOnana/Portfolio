@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("SELECT * FROM administrateurs WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch();
 
         if ($user) {
             // Envoyer le mot de passe par e-mail
@@ -91,7 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Demande de mot de passe</h2>
         <label for="email">Adresse e-mail :</label><br>
         <input type="email" id="email" name="email" required><br><br>
+        <p>Un e-mail contenant votre mot de passe sera envoyé à l'adresse fournie.</p>
+        <p>Veuillez vérifier votre dossier de spam si vous ne le recevez pas.</p>
         <button type="submit">Envoyer le mot de passe</button>
+        <br><br>
+        <button type="button" onclick="window.location.href='connexion.php'">Retour à la connexion</button>
     </form>
     <?php include 'includes/footer.php'; ?>
     <script src="assets/js/script.js"></script>

@@ -329,35 +329,57 @@ header {
     background-color: #555;
 }
 
-    /* Footer Styles */
-    footer {
-        text-align: center;
-        padding: 20px;
-        background-color: #360C0C;
-        color: white;
-        margin-top: auto;
-    }
-    
-    .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-    
-    .footer-container p {
-        margin: 5px 0;
-    }
-    
-    .footer-container a {
-        color: #fff;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    
-    .footer-container a:hover {
-        color: #fff;
-    }
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #360C0C;
+    color: #ffffff;
+    flex-wrap: wrap;
+}
 
+.footer-left,
+.footer-center,
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 5px;
+}
+
+.footer-center {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-right {
+    align-items: flex-end;
+}
+
+.footer-links {
+    margin-bottom: 10px;
+}
+
+.social-icon img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-icon img:hover {
+    transform: scale(1.1);
+}
+
+.footer-contact {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.footer-contact a {
+    color: #ffffff;
+    text-decoration: none;
+}
     @media screen and (max-width: 768px) {
 
         header{
@@ -418,12 +440,6 @@ header {
     
         .login-container{
             margin-top: 10px;
-        }
-    
-        /* Ajuste le bouton de connexion */
-        .login-btn {
-            margin-top: 10px;
-            padding: 6px 12px; /* Réduis la taille du padding */
         }
     
     }

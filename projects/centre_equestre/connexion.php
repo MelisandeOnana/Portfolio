@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['role'] = $user['role'];
 
         // Rediriger vers la page d'accueil ou page admin
-        header('Location: index.php');
+        header('Location: administration/admin_dashboard.php');
         exit;
     } else {
         $error = 'Email ou mot de passe incorrect';
@@ -53,13 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="assets/css/Connexion.css" rel="stylesheet"/>
 </head>
 <body>
-<?php include 'includes/header.php'; ?>
-<?php include 'includes/navigation.php'; ?>
     <main>
         <form method="post" action="connexion.php">
             <h3>Connexion</h3>
             <?php if ($error): ?>
-                <p class="error"><?php echo $error; ?></p>
+                <p class="error" style="color: red;"> <?php echo $error; ?></p>
             <?php endif; ?>
             <div class="form-group">
                 <label for="email">Email:</label>
@@ -67,16 +65,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" required>
+                    <a type="button" class="toggle-password" onclick="togglePassword()">👁️</a>
+                </div>
             </div>
             <div class="forgot-password">
                 <a href="motdepasseoublie.php" class="forgot-password-link">Mot de passe oublié?</a>
             </div>
-
             <button type="submit">Se connecter</button>
+            <br><br>
+            <button type="button" onclick="window.location.href='index.php'">Retour à l'accueil</button>
         </form>
     </main>
-    <?php include 'includes/footer.php'; ?>
-    <script src="assets/js/script.js"></script>
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById('password');
+            passwordInput.type = (passwordInput.type === 'password') ? 'text' : 'password';
+        }
+    </script>
 </body>
 </html>

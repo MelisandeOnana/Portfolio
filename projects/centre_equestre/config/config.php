@@ -1,8 +1,8 @@
 <?php
-$host = 'mysql-ecuriesduvaldarre.alwaysdata.net';
+$host = 'localhost';
 $db = 'ecuriesduvaldarre_centreequestre';
-$user = '364674_melisande';
-$pass = 'CentreEquestre60@';
+$user = 'root';
+$pass = '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

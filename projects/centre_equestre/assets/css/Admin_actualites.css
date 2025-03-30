@@ -403,17 +403,6 @@ a:hover {
     pointer-events: none;
 }
 
-/* Pied de page */
-footer {
-    background-color: var(--primary-color); /* Couleur principale */
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-}
-
-footer a{
-    color: #fff;
-}
 
 /* Media queries pour la réactivité */
 @media screen and (max-width: 1024px) {

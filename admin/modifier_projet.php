@@ -8,10 +8,16 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Vérifiez et créez le dossier uploads si nécessaire
-$target_dir = "../uploads/";
+// Vérifiez et créez le dossier pdf si nécessaire
+$target_dir = "../assets/pdf/";
 if (!is_dir($target_dir)) {
     mkdir($target_dir, 0777, true);
+}
+
+// Vérifiez et créez les dossiers images et pdf si nécessaire
+$target_dir_images = "../assets/images/";
+if (!is_dir($target_dir_images)) {
+    mkdir($target_dir_images, 0777, true);
 }
 
 // Récupération des technologies disponibles
@@ -39,38 +45,43 @@ $stmt_projet_technologies = $pdo->prepare($sql_projet_technologies);
 $stmt_projet_technologies->execute([':id_projet' => $id_projet]);
 $projet_technologies = $stmt_projet_technologies->fetchAll(PDO::FETCH_COLUMN);
 
+// Récupération des documents associés au projet
+$documents = !empty($projet['documents']) ? explode(',', $projet['documents']) : [];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $date_debut = $_POST['date_debut'];
     $date_fin = $_POST['date_fin'] ?? NULL;
     $visible = isset($_POST['visible']) ? 1 : 0;
+    $documents = $_POST['documents'] ?? NULL;
+    $image = $_POST['image'] ?? NULL;
     $github_links = $_POST['github_links'] ?? NULL;
     $technologies_selected = $_POST['technologies'] ?? [];
     $lien = $_POST['lien'] ?? NULL;
 
-    // Gestion du téléchargement des documents
-    $documents = [];
-    if (isset($_FILES['documents'])) {
-        foreach ($_FILES['documents']['name'] as $key => $name) {
-            if ($_FILES['documents']['error'][$key] == 0) {
-                $target_file = $target_dir . basename($name);
-                if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
-                    $documents[] = $target_file;
-                } else {
-                    echo "Erreur lors du téléchargement du fichier : $name.";
-                }
-            }
-        }
-    }
-    $documents = !empty($documents) ? json_encode($documents) : $projet['documents'];
+   // Gestion du téléchargement des documents
+   $documents = [];
+   if (isset($_FILES['documents'])) {
+       foreach ($_FILES['documents']['name'] as $key => $name) {
+           if ($_FILES['documents']['error'][$key] == 0) {
+               $target_file = $target_dir_pdf . basename($name);
+               if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
+                   $documents[] = "pdf/" . basename($name);
+               } else {
+                   echo "Erreur lors du téléchargement du fichier : $name.";
+               }
+           }
+       }
+   }
+   $documents = !empty($documents) ? implode(',', $documents) : NULL;
 
     // Gestion du téléchargement de l'image
-    $image = $projet['image'];
+    $image = NULL;
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $target_file = $target_dir_images . basename($_FILES["image"]["name"]);
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $image = $target_file;
+            $image = "images/" . basename($_FILES["image"]["name"]);
         } else {
             echo "Erreur lors du téléchargement de l'image.";
         }
@@ -116,7 +127,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -145,6 +155,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label for="documents">Documents :</label>
         <input type="file" name="documents[]" multiple><br>
+        <?php if (!empty($documents)) : ?>
+            <ul>
+                <?php foreach ($documents as $document) : ?>
+                    <li><a href="../assets/<?= htmlspecialchars($document) ?>" target="_blank"><?= htmlspecialchars(basename($document)) ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
 
         <label for="image">Image :</label>
         <input type="file" name="image" onchange="previewImage(event)"><br>
@@ -159,11 +176,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="technologies">Technologies :</label><br>
         <div class="technologies-container">
             <?php foreach ($technologies as $tech) : ?>
-                <input type="checkbox" id="tech_<?= $tech['id_technologie'] ?>" name="technologies[]" value="<?= $tech['id_technologie'] ?>">
+                <input type="checkbox" id="tech_<?= $tech['id_technologie'] ?>" name="technologies[]" value="<?= $tech['id_technologie'] ?>" <?= in_array($tech['id_technologie'], $projet_technologies) ? 'checked' : '' ?>>
                 <label for="tech_<?= $tech['id_technologie'] ?>" class="tech-label"><?= $tech['nom'] ?></label>
             <?php endforeach; ?>
         </div><br>
-
+        
         <a class="back" href="gestion_projets.php">Retour</a>
         <button type="submit">Modifier</button>
     </form>

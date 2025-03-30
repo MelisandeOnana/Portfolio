@@ -8,10 +8,15 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Vérifiez et créez le dossier uploads si nécessaire
-$target_dir = "../assets/pdf/";
-if (!is_dir($target_dir)) {
-    mkdir($target_dir, 0777, true);
+// Vérifiez et créez les dossiers images et pdf si nécessaire
+$target_dir_images = "../assets/images/";
+if (!is_dir($target_dir_images)) {
+    mkdir($target_dir_images, 0777, true);
+}
+
+$target_dir_pdf = "../assets/pdf/";
+if (!is_dir($target_dir_pdf)) {
+    mkdir($target_dir_pdf, 0777, true);
 }
 
 // Récupération des technologies disponibles
@@ -31,35 +36,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $date_debut = $_POST['date_debut'];
-    $date_fin = $_POST['date_fin'] ?? NULL;
+    $date_fin = !empty($_POST['date_fin']) ? $_POST['date_fin'] : NULL;
     $id_utilisateur = 1; // À adapter si plusieurs utilisateurs
     $visible = isset($_POST['visible']) ? 1 : 0;
     $github_links = $_POST['github_links'] ?? NULL;
     $technologies_selected = $_POST['technologies'] ?? [];
     $lien = $_POST['lien'] ?? NULL;
 
-    // Gestion du téléchargement des documents
-    $documents = [];
-    if (isset($_FILES['documents'])) {
-        foreach ($_FILES['documents']['name'] as $key => $name) {
-            if ($_FILES['documents']['error'][$key] == 0) {
-                $target_file = $target_dir . basename($name);
-                if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
-                    $documents[] = $target_file;
-                } else {
-                    echo "Erreur lors du téléchargement du fichier : $name.";
-                }
-            }
-        }
-    }
-    $documents = !empty($documents) ? json_encode($documents) : NULL;
+   // Gestion du téléchargement des documents
+   $documents = [];
+   if (isset($_FILES['documents'])) {
+       foreach ($_FILES['documents']['name'] as $key => $name) {
+           if ($_FILES['documents']['error'][$key] == 0) {
+               $target_file = $target_dir_pdf . basename($name);
+               if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
+                   $documents[] = "pdf/" . basename($name);
+               } else {
+                   echo "Erreur lors du téléchargement du fichier : $name.";
+               }
+           }
+       }
+   }
+   $documents = !empty($documents) ? implode(',', $documents) : NULL;
 
     // Gestion du téléchargement de l'image
     $image = NULL;
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $target_file = $target_dir_images . basename($_FILES["image"]["name"]);
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $image = $target_file;
+            $image = "images/" . basename($_FILES["image"]["name"]);
         } else {
             echo "Erreur lors du téléchargement de l'image.";
         }
@@ -133,7 +138,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="checkbox" name="visible" checked><br>
 
         <label for="documents">Documents :</label>
-        <input type="file" name="documents[]" multiple><br>
+        <input type="file" name="documents[]" multiple onchange="previewDocuments(event)"><br>
+        <div id="documentsPreview" style="display: none;">
+            <h4>Documents sélectionnés :</h4>
+            <ul id="documentsList"></ul>
+        </div>
 
         <label for="image">Image :</label>
         <input type="file" name="image" onchange="previewImage(event)"><br>
@@ -156,5 +165,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class="back" href="gestion_projets.php">Retour</a>
         <button type="submit">Ajouter</button>
     </form>
+    <script>
+function previewDocuments(event) {
+    const files = event.target.files;
+    const documentsPreview = document.getElementById('documentsPreview');
+    const documentsList = document.getElementById('documentsList');
+    
+    documentsList.innerHTML = ''; // Clear the list
+    if (files.length > 0) {
+        documentsPreview.style.display = 'block';
+        for (let i = 0; i < files.length; i++) {
+            const listItem = document.createElement('li');
+            listItem.textContent = files[i].name;
+            documentsList.appendChild(listItem);
+        }
+    } else {
+        documentsPreview.style.display = 'none';
+    }
+}
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    const imagePreview = document.getElementById('imagePreview');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.style.display = 'none';
+    }
+}
+</script>
 </body>
 </html>
