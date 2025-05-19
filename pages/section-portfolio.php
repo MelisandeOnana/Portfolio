@@ -44,7 +44,7 @@ try {
 <section id="projects">
     <div class="section-header">
         <h2>Mes Réalisations</h2>
-        <p>Découvrez mes projets.</p>
+        <p class="section-desc">Découvrez une sélection de mes projets réalisés avec différentes technologies. Cliquez sur les filtres pour trier par compétence.</p>
     </div>
     
     <div class="filter-container">
@@ -78,37 +78,47 @@ try {
     foreach ($result as $row) { ?>
         <div class="project">
             <?php if (!empty($row['image'])) { ?>
-                <img src="assets/<?php echo htmlspecialchars($row['image']); ?>" alt="Image du projet">
+                <img src="assets/<?php echo htmlspecialchars($row['image']); ?>" alt="Image du projet" class="project-img">
             <?php } ?>
-            <h2><?php echo htmlspecialchars($row['titre'] ?? ''); ?></h2>
-            <p><strong>Technologies :</strong> <?php echo htmlspecialchars($row['technologies'] ?? ''); ?></p>
-            <p><?php echo htmlspecialchars($row['description'] ?? ''); ?></p>
-            <p><strong>Dates :</strong> 
-                <?php 
-                $dateDebut = new DateTime($row['date_debut']);
-                $moisDebut = $moisFrancais[$dateDebut->format('F')];
-                echo htmlspecialchars(ucfirst($moisDebut . ' ' . $dateDebut->format('Y')));
-                ?>  
-                <?php 
-                if (!empty($row['date_fin'])) {
-                    $dateFin = new DateTime($row['date_fin']);
-                    $moisFin = $moisFrancais[$dateFin->format('F')];
-                    echo ' - ' . htmlspecialchars(ucfirst($moisFin . ' ' . $dateFin->format('Y')));
-                }
-                ?>
-            </p>
-            <?php if (!empty($row['lien'])) { ?>
-                <p><a href="<?php echo htmlspecialchars($row['lien']); ?>" target="_blank">Voir le projet</a></p>
-            <?php } else { ?>
-                <p><a href="galerie.php?id_projet=<?php echo $row['id_projet']; ?>" target="_blank">Voir la galerie</a></p>
-            <?php } ?>
-            <?php if (!empty($row['github_links'])) { ?>
-                <p><a href="<?php echo htmlspecialchars($row['github_links']); ?>" target="_blank">Voir GitHub</a></p>
-            <?php } ?>
-            <?php if (!empty($row['documents'])) { ?>
-                <p><a href="assets/<?php echo htmlspecialchars($row['documents']); ?>" target="_blank">Voir Documentation</a></p>
-            <?php } ?>
+            <div class="project-content">
+                <h2 class="project-title"><?php echo htmlspecialchars($row['titre'] ?? ''); ?></h2>
+                <div class="project-tech">
+                    <span class="tech-label">Technologies :</span>
+                    <span class="tech-list"><?php echo htmlspecialchars($row['technologies'] ?? ''); ?></span>
+                </div>
+                <p class="project-desc"><?php echo htmlspecialchars($row['description'] ?? ''); ?></p>
+                <div class="project-dates">
+                    <span class="date-label"><strong>Période :</strong></span>
+                    <span>
+                        <?php 
+                        $dateDebut = new DateTime($row['date_debut']);
+                        $moisDebut = $moisFrancais[$dateDebut->format('F')];
+                        echo htmlspecialchars(ucfirst($moisDebut . ' ' . $dateDebut->format('Y')));
+                        ?>  
+                        <?php 
+                        if (!empty($row['date_fin'])) {
+                            $dateFin = new DateTime($row['date_fin']);
+                            $moisFin = $moisFrancais[$dateFin->format('F')];
+                            echo ' - ' . htmlspecialchars(ucfirst($moisFin . ' ' . $dateFin->format('Y')));
+                        }
+                        ?>
+                    </span>
+                </div>
+                <div class="project-links">
+                    <?php if (!empty($row['lien'])) { ?>
+                        <a href="<?php echo htmlspecialchars($row['lien']); ?>" target="_blank" class="project-btn">Voir le projet</a>
+                    <?php } else { ?>
+                        <a href="galerie.php?id_projet=<?php echo $row['id_projet']; ?>" target="_blank" class="project-btn">Voir la galerie</a>
+                    <?php } ?>
+                    <?php if (!empty($row['github_links'])) { ?>
+                        <a href="<?php echo htmlspecialchars($row['github_links']); ?>" target="_blank" class="project-btn github">GitHub</a>
+                    <?php } ?>
+                    <?php if (!empty($row['documents'])) { ?>
+                        <a href="assets/<?php echo htmlspecialchars($row['documents']); ?>" target="_blank" class="project-btn doc">Documentation</a>
+                    <?php } ?>
+                </div>
+            </div>
         </div>
     <?php } ?>
-</div>
+    </div>
 </section>

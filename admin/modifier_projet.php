@@ -54,30 +54,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date_debut = $_POST['date_debut'];
     $date_fin = $_POST['date_fin'] ?? NULL;
     $visible = isset($_POST['visible']) ? 1 : 0;
-    $documents = $_POST['documents'] ?? NULL;
-    $image = $_POST['image'] ?? NULL;
     $github_links = $_POST['github_links'] ?? NULL;
     $technologies_selected = $_POST['technologies'] ?? [];
     $lien = $_POST['lien'] ?? NULL;
 
-   // Gestion du téléchargement des documents
-   $documents = [];
-   if (isset($_FILES['documents'])) {
-       foreach ($_FILES['documents']['name'] as $key => $name) {
-           if ($_FILES['documents']['error'][$key] == 0) {
-               $target_file = $target_dir_pdf . basename($name);
-               if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
-                   $documents[] = "pdf/" . basename($name);
-               } else {
-                   echo "Erreur lors du téléchargement du fichier : $name.";
-               }
-           }
-       }
-   }
-   $documents = !empty($documents) ? implode(',', $documents) : NULL;
+    // Gestion du téléchargement des documents
+    if (isset($_FILES['documents']) && !empty($_FILES['documents']['name'][0])) {
+        $documents = [];
+        foreach ($_FILES['documents']['name'] as $key => $name) {
+            if ($_FILES['documents']['error'][$key] == 0) {
+                $target_file = $target_dir . basename($name);
+                if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $target_file)) {
+                    $documents[] = "pdf/" . basename($name);
+                } else {
+                    echo "Erreur lors du téléchargement du fichier : $name.";
+                }
+            }
+        }
+        $documents = !empty($documents) ? implode(',', $documents) : NULL;
+    } else {
+        // Conservez les documents existants si aucun nouveau fichier n'est téléchargé
+        $documents = $projet['documents'];
+    }
 
     // Gestion du téléchargement de l'image
-    $image = NULL;
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $target_file = $target_dir_images . basename($_FILES["image"]["name"]);
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
@@ -85,6 +85,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Erreur lors du téléchargement de l'image.";
         }
+    } else {
+        // Conservez l'image existante si aucune nouvelle image n'est téléchargée
+        $image = $projet['image'];
     }
 
     // Mise à jour du projet dans la table 'projet'
@@ -94,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':titre' => $titre,
         ':description' => $description,
         ':date_debut' => $date_debut,
-        ':date_fin' => $date_fin,
+        ':date_fin' => $date_fin, // NULL si non rempli
         ':visible' => $visible,
         ':documents' => $documents,
         ':github_links' => $github_links,

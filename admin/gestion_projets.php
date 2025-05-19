@@ -44,8 +44,7 @@ $offset = max(0, ($currentPage - 1) * $projectsPerPage);
 $sql = 'SELECT p.*, GROUP_CONCAT(t.nom SEPARATOR ", ") AS technologies
         FROM projet p
         LEFT JOIN projet_technologie pt ON p.id_projet = pt.id_projet
-        LEFT JOIN technologie t ON pt.id_technologie = t.id_technologie
-        WHERE p.visible = 1';
+        LEFT JOIN technologie t ON pt.id_technologie = t.id_technologie';
 if ($searchTerm) {
     $sql .= ' AND (p.titre LIKE :search OR p.description LIKE :search)';
 }

@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function() {
     const skillCards = document.querySelectorAll(".skill-card");
     const dots = document.querySelectorAll(".dot");
@@ -92,23 +91,26 @@ function showPopup(message) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const sections = document.querySelectorAll('section');
+    const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('header nav ul li a');
 
     window.addEventListener('scroll', function() {
         let current = '';
+        const scrollY = window.pageYOffset;
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 0;
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= sectionTop - sectionHeight / 3) {
+            const sectionTop = section.offsetTop - headerHeight - 10; // 10px de marge
+            const sectionHeight = section.offsetHeight;
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
             }
         });
 
         navLinks.forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
+            if (current && link.getAttribute('href') === '#' + current) {
                 link.classList.add('active');
             }
         });
@@ -149,4 +151,20 @@ document.addEventListener('DOMContentLoaded', function () {
         // Créer une popup pour le message de succès
         alert("Votre message a été envoyé avec succès. Merci de m'avoir contacté !");
     }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const el = document.querySelector('.animated-text');
+    if (!el) return;
+    const text = el.textContent;
+    el.textContent = '';
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 40);
+        }
+    }
+    type();
 });

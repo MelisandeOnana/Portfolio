@@ -193,13 +193,13 @@ session_start();
                             $result = null;
                             if (empty($_GET['thematique']) && empty($_GET['difficulte']) && empty($_GET['mot_cle'])) {
                                 echo "<tr><td colspan='6'>Effectuez une recherche pour afficher les résultats</td></tr>";
-                            }else{
-                                // Récupére les valeurs des champs de recherche
+                            } else {
+                                // Récupère les valeurs des champs de recherche
                                 $thematique = isset($_GET['thematique']) ? $_GET['thematique'] : '';
                                 $difficulte = isset($_GET['difficulte']) ? $_GET['difficulte'] : '';
                                 $mot_cle = isset($_GET['mot_cle']) ? $_GET['mot_cle'] : '';
 
-                                // Construie la condition WHERE en fonction des champs remplis dans le formulaire
+                                // Construit la condition WHERE en fonction des champs remplis dans le formulaire
                                 $where_conditions = [];
                                 if (!empty($thematique)) {
                                     $where_conditions[] = "thematic.name = '$thematique'";
@@ -215,10 +215,10 @@ session_start();
                                     $sql_all_exercices .= " WHERE " . implode(" AND ", $where_conditions);
                                 }
                                 // Exécute la requête SQL
-                                $result = $mysqlClient->query($sql_all_exercices);
+                                $result = $conn->query($sql_all_exercices);
 
                                 // Affiche le nombre d'exercices trouvés
-                                $num_exercices = $result->rowCount();
+                                $num_exercices = $result->num_rows; // Utilisez num_rows pour mysqli
                                 if ($num_exercices > 1) {
                                     echo "<p><strong>$num_exercices exercices trouvés</strong></p>";
                                 } elseif ($num_exercices == 1) {
@@ -227,9 +227,9 @@ session_start();
                                     echo "<p><strong>Aucun exercice trouvé</strong></p>";
                                 }    
 
-                                if ($result !== null && $result->rowCount() > 0) {
+                                if ($result !== null && $result->num_rows > 0) {
 
-                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    while ($row = $result->fetch_assoc()) {
 
                                         echo "<tr>";
                                             echo "<td>" . $row["exercise_name"] . "</td>";

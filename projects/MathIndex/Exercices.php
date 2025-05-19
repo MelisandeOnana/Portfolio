@@ -4,8 +4,8 @@ session_start();
 include_once 'requetes/configdb.php';
 
 // Assurez-vous que la connexion à la base de données est établie
-if (!isset($mysqlClient) || !$mysqlClient) {
-    die("Connection failed: " . $mysqlClient->connect_error);
+if (!isset($conn) || !$conn) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Pagination
@@ -15,13 +15,12 @@ $offset = ($page - 1) * $exercices_par_page;
 
 // Requête pour obtenir le nombre total d'exercices
 $sql_total_exercices = "SELECT COUNT(*) AS total FROM exercise";
-$result_total_exercices = $mysqlClient->query($sql_total_exercices);
-$row_total_exercices = $result_total_exercices->fetch(PDO::FETCH_ASSOC);
+$result_total_exercices = $conn->query($sql_total_exercices);
+$row_total_exercices = $result_total_exercices->fetch_assoc();
 $total_exercices = $row_total_exercices['total'];
 
 // Calcule le nombre total de pages
 $total_pages = ceil($total_exercices / $exercices_par_page);
-
 ?>
 
 <!DOCTYPE html>
@@ -142,11 +141,11 @@ $total_pages = ceil($total_exercices / $exercices_par_page);
                                     LEFT JOIN file AS file_exercice ON exercise.exercice_file_id = file_exercice.id
                                     LEFT JOIN file AS file_correction ON exercise.correction_file_id = file_correction.id
                                     ORDER BY exercise.date DESC LIMIT 3";
-                            $result = $mysqlClient->query($sql);
+                            $result = $conn->query($sql);
 
                             // Afficher les données dans le tableau HTML
-                            if ($result->rowCount() > 0) {
-                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
                                     echo "<tr>";
                                         echo "<td>" . $row["exercise_name"] . "</td>";
                                         echo "<td>" . $row["thematic_name"] . "</td>";
@@ -202,11 +201,11 @@ $total_pages = ceil($total_exercices / $exercices_par_page);
                                     LEFT JOIN file AS file_correction ON exercise.correction_file_id = file_correction.id
                                     ORDER BY exercise.date DESC
                                     LIMIT $exercices_par_page OFFSET $offset";
-                            $result = $mysqlClient->query($sql);
+                            $result = $conn->query($sql);
 
                             // Afficher les données dans le tableau HTML
-                            if ($result->rowCount() > 0) {
-                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
                                     echo "<tr>";
                                     echo "<td>" . $row["exercise_name"] . "</td>";
                                     echo "<td>" . $row["thematic_name"] . "</td>";
@@ -224,9 +223,9 @@ $total_pages = ceil($total_exercices / $exercices_par_page);
 
                                     if ($row["correction_original_name"] && $row["correction_extension"]) {
                                         echo "<img src='assets/images/icone_download.svg'>
-                                        <a href='assets/Corriges/" . $row["correction_name"] . "." . $row["extension"]. "' download='" . $row["correction_original_name"] . "." . $row["correction_extension"] . "'>Corrigé</a>";
+                                        <a href='assets/Corriges/" . $row["correction_name"] . "." . $row["correction_extension"] . "' download='" . $row["correction_original_name"] . "." . $row["correction_extension"] . "'>Corrigé</a>";
                                     }
-                                echo "</td>";
+                                    echo "</td>";
                                     echo "</tr>";
                                 }
                             }
