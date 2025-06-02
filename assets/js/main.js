@@ -92,16 +92,16 @@ function showPopup(message) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('header nav ul li a');
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link'); // Correction ici
 
-    window.addEventListener('scroll', function() {
+    function updateActiveLink() {
         let current = '';
         const scrollY = window.pageYOffset;
-        const header = document.querySelector('header');
+        const header = document.querySelector('.navbar');
         const headerHeight = header ? header.offsetHeight : 0;
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - headerHeight - 10; // 10px de marge
+            const sectionTop = section.offsetTop - headerHeight - 10;
             const sectionHeight = section.offsetHeight;
             if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
@@ -114,7 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
-    });
+
+        // Ajoute ceci pour déplacer l'underline à chaque scroll
+        moveUnderline();
+    }
+
+    window.addEventListener('scroll', updateActiveLink);
 });
 
 // Configuration Tarteaucitron
@@ -167,4 +172,41 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     type();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const nav = document.querySelector('.navbar-nav');
+    if (!nav) return;
+    let underline = document.createElement('div');
+    underline.className = 'nav-underline-anim';
+    nav.appendChild(underline);
+
+    function moveUnderline() {
+        const active = nav.querySelector('.nav-link.active');
+        if (active) {
+            const rect = active.getBoundingClientRect();
+            const navRect = nav.getBoundingClientRect();
+            underline.style.width = rect.width + "px";
+            underline.style.left = (rect.left - navRect.left) + "px";
+            underline.style.background = window.getComputedStyle(active, '::after').background || underline.style.background;
+        } else {
+            underline.style.width = 0;
+        }
+    }
+
+    // Initial position
+    moveUnderline();
+
+    // Sur scroll (changement de section)
+    window.addEventListener('scroll', moveUnderline);
+
+    // Sur resize (responsive)
+    window.addEventListener('resize', moveUnderline);
+
+    // Sur clic menu
+    nav.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            setTimeout(moveUnderline, 200);
+        });
+    });
 });

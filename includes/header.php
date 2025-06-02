@@ -1,57 +1,47 @@
-<!-- filepath: c:\wamp64\www\portfolio\includes\header.php -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="assets/js/main.js" defer></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tarteaucitronjs@1.9.6/tarteaucitron.min.js"></script>
     <title>Portfolio</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <a href="connexion.php">Mélisande<br>Onana Ngono</a>
-        </div>
-        <button class="hamburger" aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <nav class="menu">
-            <ul>
-                <li><a href="#home" class="active">Accueil</a></li>
-                <li><a href="#projects">Mes Réalisations</a></li>
-                <li><a href="#skills">Mes Apprentissages</a></li>
-                <li><a href="#technology_watch">Veille technologique</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const hamburger = document.querySelector(".hamburger");
-        const menu = document.querySelector(".menu");
-        const menuLinks = document.querySelectorAll(".menu ul li a");
-
-        // Ouvrir/fermer le menu avec le bouton hamburger
-        hamburger.addEventListener("click", () => {
-            menu.classList.toggle("active");
-            hamburger.classList.toggle("open");
-        });
-
-        // Fermer le menu lorsqu'un lien est cliqué
-        menuLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                menu.classList.remove("active");
-                hamburger.classList.remove("open");
-            });
-        });
-    });
-</script>
+<nav class="navbar navbar-expand-lg navbar-blur">
+  <div class="container">
+    <a class="navbar-brand fw-bold d-flex flex-column align-items-center" href="connexion.php">
+        <span style="line-height:1;">Mélisande</span>
+        <span style="line-height:1;">Onana Ngono</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link nav-anim active" aria-current="page" href="#home">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-anim" href="#projects">Mes Réalisations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-anim" href="#skills">Mes Apprentissages</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-anim" href="#technology_watch">Veille technologique</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-anim" href="#contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- Bootstrap JS Bundle CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>

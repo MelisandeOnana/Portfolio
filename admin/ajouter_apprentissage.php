@@ -13,10 +13,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = htmlspecialchars($_POST["description"]);
     $date_debut = htmlspecialchars($_POST["date_debut"]);
 
+    // Gestion de l'upload du PDF
+    $certification_pdf = null;
+    if (isset($_FILES['certification_pdf']) && $_FILES['certification_pdf']['error'] == 0) {
+        $dossier = '../certifications/';
+        if (!is_dir($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
+        $fichier = basename($_FILES['certification_pdf']['name']);
+        $chemin = $dossier . uniqid() . '_' . $fichier;
+        if (move_uploaded_file($_FILES['certification_pdf']['tmp_name'], $chemin)) {
+            $certification_pdf = $chemin;
+        }
+    }
+
     // Requête d'insertion
-    $query = "INSERT INTO technologie (nom, description, date_debut) VALUES (?, ?, ?)";
+    $query = "INSERT INTO technologie (nom, description, date_debut, certification_pdf) VALUES (?, ?, ?, ?)";
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$nom, $description, $date_debut]);
+    $stmt->execute([$nom, $description, $date_debut, $certification_pdf]);
 
     // Redirection après ajout
     $_SESSION['message'] = "Apprentissage ajouté avec succès.";
@@ -38,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1>Ajouter un Apprentissage</h1>
         </header>
         <main>
-            <form method="POST" action="ajouter_apprentissage.php">
+            <form method="POST" action="ajouter_apprentissage.php" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="nom">Nom:</label>
                     <input type="text" id="nom" name="nom" required>
@@ -50,6 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label for="date_debut">Date de Début:</label>
                     <input type="date" id="date_debut" name="date_debut" required>
+                </div>
+                <div class="form-group">
+                    <label for="certification_pdf">Certification PDF:</label>
+                    <input type="file" id="certification_pdf" name="certification_pdf" accept=".pdf">
                 </div>
                 <a href="gestion_apprentissages.php" class="btn">Retour</a>
                 <button type="submit" class="btn">Ajouter</button>

@@ -83,7 +83,7 @@ try {
             <div class="project-content">
                 <h2 class="project-title"><?php echo htmlspecialchars($row['titre'] ?? ''); ?></h2>
                 <div class="project-tech">
-                    <span class="tech-label">Technologies :</span>
+                    <span class="tech-label"><strong>Technologies :</strong></span>
                     <span class="tech-list"><?php echo htmlspecialchars($row['technologies'] ?? ''); ?></span>
                 </div>
                 <p class="project-desc"><?php echo htmlspecialchars($row['description'] ?? ''); ?></p>
