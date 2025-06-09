@@ -419,6 +419,200 @@ section p {
 }
 
 /* =======================
+   SECTION SKILLS
+   ======================= */
+
+#skills {
+    background: linear-gradient(120deg, #fdf6ff 60%, #ffe3ec 100%);
+    min-height: 100vh;
+    padding: 60px 0;
+}
+.skills-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2.5rem;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-behavior: smooth;
+}
+.skill-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px 0 rgba(253, 78, 93, 0.10);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    min-width: 260px;
+    max-width: 320px;
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: transform 0.18s, box-shadow 0.18s;
+}
+.skill-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 8px 32px 0 rgba(253, 78, 93, 0.18);
+    border: 2px solid #FD4E5D22;
+}
+.skill-icon {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    color: #FD4E5D;
+    background: #fff0f9;
+    border-radius: 50%;
+    padding: 0.7rem;
+    box-shadow: 0 2px 8px #fd4e5d22;
+}
+.skill-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FD4E5D;
+    margin-bottom: 0.4rem;
+    text-align: center;
+}
+.skill-date {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: #FD4E5D;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.2rem 0.9rem;
+    box-shadow: 0 1px 4px #fd4e5d22;
+}
+.skill-desc {
+    color: #6c757d;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    text-align: center;
+}
+.skill-cert {
+    margin-top: auto;
+}
+.skill-cert a {
+    margin: 0 0.3rem 0.3rem 0;
+    display: inline-block;
+    border-radius: 2rem;
+    border: 2px solid #FD4E5D;
+    color: #FD4E5D;
+    background: #fff;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.skill-cert a:hover {
+    background: #FD4E5D;
+    color: #fff;
+}
+@media (max-width: 900px) {
+    .skills-grid { gap: 1.2rem; }
+    .skill-card { min-width: 180px; padding: 1.2rem 0.7rem; }
+}
+#skills h2 {
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    color: #FD4E5D;
+    text-shadow: 0 2px 8px #fd4e5d22;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+.flip-card {
+    background: transparent;
+    width: 280px;
+    height: 260px;
+    perspective: 1000px;
+    margin-bottom: 1.5rem;
+    flex: 0 0 280px;
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(.4,2.3,.3,1);
+    transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px 0 rgba(253, 78, 93, 0.10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    background: #fff;
+    padding: 1.5rem;
+}
+.flip-card-front {
+    z-index: 2;
+}
+.flip-card-back {
+    background: linear-gradient(120deg, #fd4e5d 60%, #ffe3ec 100%);
+    color: #fff;
+    transform: rotateY(180deg);
+    z-index: 3;
+}
+.flip-card .skill-icon {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    color: #FD4E5D;
+    background: #fff0f9;
+    border-radius: 50%;
+    padding: 0.7rem;
+    box-shadow: 0 2px 8px #fd4e5d22;
+}
+.flip-card .skill-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FD4E5D;
+    margin-bottom: 0.4rem;
+    text-align: center;
+}
+.flip-card .skill-desc {
+    color: #6c757d;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    text-align: center;
+}
+.flip-card .skill-date {
+    background: #fff;
+    color: #FD4E5D;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 1rem;
+    padding: 0.3rem 1.1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 4px #fd4e5d22;
+}
+.flip-card .skill-cert a {
+    margin: 0 0.3rem 0.3rem 0;
+    display: inline-block;
+    border-radius: 2rem;
+    border: 2px solid #fff;
+    color: #fff;
+    background: #FD4E5D;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.flip-card .skill-cert a:hover {
+    background: #fff;
+    color: #FD4E5D;
+    border: 2px solid #FD4E5D;
+}
+
+/* =======================
    SECTION CONTACT
    ======================= */
 #contact {
@@ -886,50 +1080,6 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background: #e73370;
-}
-
-/* =======================
-   VARIATIONS DE COULEUR
-   ======================= */
-.primary-bg {
-    background-color: #FD4E5D;
-}
-
-.secondary-bg {
-    background-color: #ffe3e8;
-}
-
-.text-primary {
-    color: #FD4E5D;
-}
-
-.text-secondary {
-    color: #e73370;
-}
-
-a:hover,
-a:focus {
-    color: #e73370 !important; /* Rose plus foncé au survol */
-}
-
-/* --- Couleurs des boutons --- */
-.btn {
-    background-color: #FD4E5D;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.btn:hover {
-    background-color: #e73370;
-    transform: translateY(-2px);
-}
-
-.btn:active {
-    transform: translateY(1px);
 }
 
 /* =======================

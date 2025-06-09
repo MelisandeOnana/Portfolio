@@ -28,10 +28,10 @@ session_start();
           <a class="nav-link nav-anim active" aria-current="page" href="#home">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-anim" href="#projects">Mes Réalisations</a>
+          <a class="nav-link nav-anim" href="#projects">Réalisations</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-anim" href="#skills">Mes Apprentissages</a>
+          <a class="nav-link nav-anim" href="#skills">Compétences</a>
         </li>
         <li class="nav-item">
           <a class="nav-link nav-anim" href="#technology_watch">Veille technologique</a>
