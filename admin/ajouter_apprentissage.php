@@ -14,18 +14,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date_debut = htmlspecialchars($_POST["date_debut"]);
 
     // Gestion de l'upload du PDF
-    $certification_pdf = null;
-    if (isset($_FILES['certification_pdf']) && $_FILES['certification_pdf']['error'] == 0) {
+    $certification_pdfs = [];
+    if (isset($_FILES['certification_pdf']) && $_FILES['certification_pdf']['error'][0] == 0) {
         $dossier = '../certifications/';
         if (!is_dir($dossier)) {
             mkdir($dossier, 0777, true);
         }
-        $fichier = basename($_FILES['certification_pdf']['name']);
-        $chemin = $dossier . uniqid() . '_' . $fichier;
-        if (move_uploaded_file($_FILES['certification_pdf']['tmp_name'], $chemin)) {
-            $certification_pdf = $chemin;
+        foreach ($_FILES['certification_pdf']['tmp_name'] as $key => $tmp_name) {
+            if ($_FILES['certification_pdf']['error'][$key] == 0) {
+                $fichier = basename($_FILES['certification_pdf']['name'][$key]);
+                $chemin = $dossier . uniqid() . '_' . $fichier;
+                if (move_uploaded_file($tmp_name, $chemin)) {
+                    $certification_pdfs[] = $chemin;
+                }
+            }
         }
     }
+    // Stockez les chemins en JSON ou séparés par une virgule selon votre besoin
+    $certification_pdf = !empty($certification_pdfs) ? json_encode($certification_pdfs) : null;
 
     // Requête d'insertion
     $query = "INSERT INTO technologie (nom, description, date_debut, certification_pdf) VALUES (?, ?, ?, ?)";
@@ -66,8 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="date" id="date_debut" name="date_debut" required>
                 </div>
                 <div class="form-group">
-                    <label for="certification_pdf">Certification PDF:</label>
-                    <input type="file" id="certification_pdf" name="certification_pdf" accept=".pdf">
+                    <label for="certification_pdf">Certification PDF :</label>
+                    <input type="file" id="certification_pdf" name="certification_pdf[]" accept=".pdf" multiple>
                 </div>
                 <a href="gestion_apprentissages.php" class="btn">Retour</a>
                 <button type="submit" class="btn">Ajouter</button>

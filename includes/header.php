@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,7 +15,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-blur">
   <div class="container">
-    <a class="navbar-brand fw-bold d-flex flex-column align-items-center" href="connexion.php">
+    <a class="navbar-brand fw-bold d-flex flex-column align-items-center" href="<?php echo isset($_SESSION['username']) ? 'admin/tableau_de_bord.php' : 'connexion.php'; ?>">
         <span style="line-height:1;">Mélisande</span>
         <span style="line-height:1;">Onana Ngono</span>
     </a>

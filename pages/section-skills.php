@@ -11,7 +11,7 @@ $categories = [
     'Langages' => ['PHP', 'HTML', 'CSS'],
     'Frameworks' => ['Laravel', 'Symfony'],
     'Bibliothèques' => ['React'],
-    'Outils' => ['Git', 'GitHub', 'Figma', 'Visual Studio Code', 'Visual Code']
+    'Outils' => ['Git', 'GitHub', 'Figma', 'Visual Studio Code', 'Visual Code', 'Pix']
 ];
 
 $grouped = [];
@@ -45,9 +45,19 @@ foreach ($categories as $cat => $noms) {
                                         <h5 class="card-title" style="color: #FD4E5D;"><?= htmlspecialchars($tech['nom']) ?></h5>
                                         <p class="card-text text-muted"><?= htmlspecialchars($tech['description']) ?></p>
                                         <p class="card-text small text-secondary"><?= date('m/Y', strtotime($tech['date_debut'])) ?></p>
-                                        <?php if (!empty($tech['certification_pdf'])): ?>
-                                            <a href="<?= htmlspecialchars($tech['certification_pdf']) ?>" target="_blank" class="btn btn-sm btn-outline-danger">📄 Certification</a>
-                                        <?php endif; ?>
+                                        <?php
+                                        if (!empty($tech['certification_pdf'])) {
+                                            $pdfs = json_decode($tech['certification_pdf'], true);
+                                            if (is_array($pdfs)) {
+                                                foreach ($pdfs as $i => $pdf) {
+                                                    echo '<a href="'.htmlspecialchars($pdf).'" target="_blank" class="btn btn-sm btn-outline-danger me-1">📄 Certification '.($i+1).'</a>';
+                                                }
+                                            } else {
+                                                // Cas d'un seul PDF (ancienne donnée)
+                                                echo '<a href="'.htmlspecialchars($tech['certification_pdf']).'" target="_blank" class="btn btn-sm btn-outline-danger">📄 Certification</a>';
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
